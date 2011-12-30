@@ -1,0 +1,69 @@
+
+	Special thanks to:
+
+	* IBM Turk for electing VoIPong as the best project in Linux Awards 2004.
+	
+	* Baris Simsek <simsek at enderunix dot org>
+	  for his work on VoIPong autoconf scripts, pointers for codecs and CDR file.
+
+	* Omer Faruk Sen <ofsen at enderunix dot org>
+	  for his work on VoIPong Live-CD!.
+
+	* Halil Demirezen <halil at enderunix dot org> for the Solaris Makefile.
+
+	* EnderUNIX team for their invaluable support and friendships
+
+	* Alex Barger <abarger at webxtreme.com>
+	  for bug-reports, patches and sample voice sessions.
+
+	* Andreas Jutzy <andreas.jutzy networks-ltd.de>
+	  for the hint about G711 PCMA support.
+
+	* Eric [valgasu at club-internet dot fr]
+	  for the hint about fixed ip-port IP adapters
+
+	* Pete Erickson <pete.perickson at gmail dot dot com>
+	  fot the news about Gentoo-Linux compilation
+
+	* "Vitalij Gura" <vgura_sns at mail.ru>
+	  for the codec pointers
+
+	* Ignacio Bolivar <igibo at yahoo dot com>
+	  for the codec pointers
+
+	* Stijn Vande Casteele <trusted at gmail dot com>
+	  for the hint about startup filters
+
+	* Mark Wiater <mwiater at izoneinc.net>
+	  for the idea of generating much more information out of RTP/RTCP.
+
+	* Ami Chayun <ami at beyondsecurity dot com>
+	  for the notice about daemon_init pidfile locking issue.
+
+	* bobci <tobasco00 at yahoo.com>
+	  for bug-reports
+
+	* Aaron Schulman <aschulm at umd.edu>
+	  for letting me know that VoIPong runs on OS X 10.4.2 
+
+	* Kevin Watkins <Kevin.Watkins at NetIQ.com>
+	  for .wav file injection idea.
+
+	* Rob Deker <deker at slackdot.org>
+	  for bug-reports
+
+	for sample voice sessions:
+
+	* Rupa Schomaker <rupa at rupa dot com>
+	* Ramamohan Yeggoni <ryeggoni at gmail dot com>	
+	* Richard Hill <Richard.Hill at orc dot co dot uk>
+	* Jonathan Wilson <jwilson at bridgewater dot it>
+	* Clement Chen <clementchen at gmail dot com>
+	* Rodrigo Frez <rfrez at mets at cl>
+	* Andrea wizard <devilbsd at hotmail dot com>
+	* Eric Alexander <eric at ericalexander dot org>
+	* Iqbal < iqbal at gigo dot co dot uk>
+	
+
+
+Wed Sep 28 16:58:31 EEST 2005

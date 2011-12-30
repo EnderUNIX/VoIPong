@@ -1,0 +1,103 @@
+#
+# b$
+# Thu Dec 23 11:04:01 EET 2004
+#
+AC_INIT(voipong, 2.0, murat@enderunix.org)
+AM_INIT_AUTOMAKE(voipong, 2.0)
+AM_CONFIG_HEADER(config.h)
+
+AC_PREFIX_DEFAULT([/usr/local])
+
+AC_CANONICAL_HOST
+
+CFLAGS=""
+LDFLAGS="${LDFLAGS} -L/usr/local/lib -L/usr/lib"
+LIBS=-lpcap
+
+AC_MSG_CHECKING([for operating system])
+case "$host_os" in
+linux*)
+	AC_DEFINE([LINUX], 1, [Define for the Linux operating system.])
+	;;
+freebsd*)
+	AC_DEFINE([FREEBSD], 1, [Define for the freebsd operating system.])
+	;;
+openbsd*)
+  AC_DEFINE([FREEBSD], 1, [Define for the openbsd operating system.])
+  ;;
+netbsd*)
+  AC_DEFINE([FREEBSD], 1, [Define for the netbsd operating system.])
+  ;;
+solaris*)
+	AC_DEFINE([SOLARIS], 1, [Define for the solaris operating system.])
+  LIBS="${LIBS} -lsocket -lresolv -lnsl"
+	;;
+hpux*)
+	AC_DEFINE([HPUX], 1, [Define for the hp-ux operating system.])
+	;;
+aix*)
+	AC_DEFINE([AIX], 1, [Define for the aix operating system.])
+	;;
+*)
+	AC_MSG_ERROR([Non supprted operating system: $host_os. exiting.])
+	;;
+esac
+
+AC_MSG_RESULT($host_os)
+AC_CONFIG_SRCDIR([voipong.c])
+
+# Checks for programs.
+AC_PROG_CC
+
+# Checks for libraries.
+# FIXME: Replace `main' with a function in `-lpcap':
+AC_CHECK_LIB([pcap], [pcap_lookupnet], [], [
+	echo "Error! You need to have pcap library."
+	echo "Visit http://www.tcpdump.org/ for pcap library."
+	exit -1
+])
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h netdb.h netinet/in.h stdlib.h string.h sys/param.h sys/socket.h sys/time.h syslog.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_TYPE_OFF_T
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+AC_CHECK_TYPE(u_int32_t, [
+			  echo "#ifndef __OSSPECIFIC__" > include/osspecific.h;
+			  echo "#define __OSSPECIFIC__" >> include/osspecific.h;
+			  
+		], [
+			  echo "#ifndef __OSSPECIFIC__" > include/osspecific.h;
+			  echo "#define __OSSPECIFIC__" >> include/osspecific.h;
+			  echo "typedef unsigned int u_int32_t;" >> include/osspecific.h;
+		]
+	)
+
+AC_CHECK_TYPE(u_int16_t, [ 
+			  echo "#endif" >> include/osspecific.h;
+			],
+		[
+			  echo "typedef unsigned short u_int16_t;" >> include/osspecific.h;
+			  echo "#endif" >> include/osspecific.h;
+		]
+	)
+
+
+# Checks for library functions.
+AC_FUNC_FORK
+AC_FUNC_MALLOC
+AC_FUNC_MEMCMP
+AC_FUNC_STAT
+AC_FUNC_STRFTIME
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS([getcwd inet_ntoa localtime_r memmove memset mkdir select socket strerror uname])
+
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

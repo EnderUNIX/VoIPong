@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Dynamic Shared Object Modules (DSOM)</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="PREVIOUS" title="Installation via BSD ports system"
+href="installports.html" />
+<link rel="NEXT" title="Configuration" href="config.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="CHAPTER" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="installports.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom"></td>
+<td width="10%" align="right" valign="bottom"><a href="config.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="CHAPTER">
+<h1><a id="DSOM" name="DSOM"></a>Chapter 4. Dynamic Shared Object Modules (DSOM)</h1>
+
+<p>Since release 2.0 upwards, VoIPong provides a powerful dynamic framework for loading
+of 3rd party voice decoders into the running voipong executable at runtime. This is
+called Dynamic Shared Object Modules (DSOM) Framework. Simply put, DSOM vocoder modules
+are shared libraries with the <tt class="FILENAME">.so</tt> extension. VoIPong looks for
+those shared libraries in the preconfigured <var class="LITERAL">modpath</var> directory,
+loads them one by one. DSOM engine resident at VoIPong core, spots the initialization
+method in the shared module and invokes it allowing the module to register itself inside
+VoIPong runtime environment:</p>
+
+<pre class="SCREEN">
+07/12/05 13:29:25: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2813e370)
+07/12/05 13:29:25: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x28140390)
+07/12/05 13:29:25: loaded 2 module(s)
+   
+</pre>
+
+<br />
+<br />
+<p>For security reasons, the DSOMs are expected to be owned by the same user and group
+who is running the core VoIPong executable. For instance, if the user running the program
+has uid 1000 and gid 10; the modules should also be owned by uid 1000 and gid 10.</p>
+
+<p>The naming convention is that the modules should start with the <var
+class="LITERAL">modvocoder_</var> keyword, and should include the name of the decoder in
+the module, followed by the <var class="LITERAL">.so</var> extension. For example, the
+correct name for the g711 (u-law) module can be <tt
+class="FILENAME">modvocoder_pcmu.so</tt>.</p>
+
+<p>There are two pre-written voice decoder modules with VoIPong release 2.0:</p>
+
+<ul>
+<li>
+<p><tt class="FILENAME">modvocoder_pcmu.so</tt>: g711 (u-law) decoder (payload type
+0)</p>
+</li>
+
+<li>
+<p><tt class="FILENAME">modvocoder_pcma.so</tt>: g711 (a-law) decoder (payload type
+8)</p>
+</li>
+</ul>
+
+<br />
+<br />
+<p>To code and install your own vocoder module (i.e. for g726), VoIPong DSOM Decoder
+Writer's Guide will be available soon.</p>
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="installports.html"
+accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="config.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">Installation via BSD ports system</td>
+<td width="34%" align="center" valign="top">&nbsp;</td>
+<td width="33%" align="right" valign="top">Configuration</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+

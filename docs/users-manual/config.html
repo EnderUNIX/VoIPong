@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Configuration</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="PREVIOUS" title="Dynamic Shared Object Modules (DSOM)" href="dsom.html" />
+<link rel="NEXT" title="Network - Algorithm mappings: voipongnets"
+href="config-netfile.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="CHAPTER" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="dsom.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom"></td>
+<td width="10%" align="right" valign="bottom"><a href="config-netfile.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="CHAPTER">
+<h1><a id="CONFIG" name="CONFIG"></a>Chapter 5. Configuration</h1>
+
+<div class="TOC">
+<dl>
+<dt><b>Table of Contents</b></dt>
+
+<dt>5.1. <a href="config.html#CONFIG-CFGFILE">Configuration file: voipong.conf</a></dt>
+
+<dt>5.2. <a href="config-netfile.html">Network - Algorithm mappings: voipongnets</a></dt>
+</dl>
+</div>
+
+<p>Configuration files are all installed into VoIPong directory: <tt
+class="FILENAME">/usr/local/etc/voipong</tt>. Main configuration parameters are included
+in <tt class="FILENAME">voipong.conf</tt> file. <tt class="FILENAME">voipongnets</tt>
+file maps network addresses to their proper algorithms. DSOM modules for <span
+class="emphasis"><i class="EMPHASIS">g711-ulaw</i></span> and <span class="emphasis"><i
+class="EMPHASIS">g711-alaw</i></span> (<tt class="FILENAME">modvocoder_pcmu.so</tt>, <tt
+class="FILENAME">modvocoder_pcma.so</tt>) are installed to the path given with the <var
+class="LITERAL">modpath</var> configuration file directive.</p>
+
+<div class="SECT1">
+<h1 class="SECT1"><a id="CONFIG-CFGFILE" name="CONFIG-CFGFILE">5.1. Configuration file:
+voipong.conf</a></h1>
+
+<p>Runtime configuration parameters vital to the smoothly operation of VoIPong server are
+defined in <tt class="FILENAME">voipong.conf</tt>, formatted as a standart <span
+class="emphasis"><i class="EMPHASIS">.ini</i></span> file. There are two sections: <span
+class="emphasis"><i class="EMPHASIS">GENERAL</i></span> for general server settings, and
+<span class="emphasis"><i class="EMPHASIS">FILTERS</i></span> for setting up startup
+filters.</p>
+
+<div class="SECT2">
+<h2 class="SECT2"><a id="CONFIG-CFGFILE-GENERAL" name="CONFIG-CFGFILE-GENERAL">5.1.1.
+GENERAL section</a></h2>
+
+<ul>
+<li>
+<p><tt class="COMMAND">logdir</tt>: specifies the log directory where voipong will save
+its logs e.g. <tt class="FILENAME">/var/log</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">logfile</tt>: name of the main server log file e.g. <tt
+class="FILENAME">voipong.log</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">outdir</tt>: path where output .WAV and/or .RAW files are to be
+written. e.g. <tt class="FILENAME">/var/log/voipoutput</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">cdrfile</tt>: name of the CDR (Common Data Record) log file e.g.
+<tt class="FILENAME">cdr.log</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">networksfile</tt>: path to the network/algorithm mappings file
+e.g. <tt class="FILENAME">/usr/local/etc/voipong/voipongnets</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">pidfile</tt>: path to the pidfile e.g. <tt
+class="FILENAME">/var/run/voipong.pid</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">soxpath</tt>: path to the sox executable e.g. <tt
+class="FILENAME">/usr/local/bin/sox</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">modpath</tt>: path to the directory where vocoder DSOM modules are
+installed. e.g. <tt class="FILENAME">/usr/local/etc/voipong/modules</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">soxmixpath</tt>: path to the soxmix executable e.g. <tt
+class="FILENAME">/usr/local/bin/soxmix</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">mgmt_ipcpath</tt>: path to the UNIX domain socket for management
+console e.g. <tt class="FILENAME">/tmp/voipongmgmt.sock</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">defalg</tt>: Default packet matching algorithm. This can currently
+only be lfp. Other algorithms are to be developed. e.g. <tt class="FILENAME">lfp</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">rtp_idle_time</tt>: (in seconds) when this amount of time elapses
+and no RTP traffic is received for the call, the call is considered to be finished. e.g.
+<tt class="FILENAME">10</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">device</tt>: network device to sniff packets from e.g. <tt
+class="FILENAME">eth0</tt></p>
+</li>
+</ul>
+
+<ul>
+<li>
+<p><tt class="COMMAND">promisc</tt>: set this to true <tt class="FILENAME">1</tt> if you
+want VoIpong to set your sniffing device to promiscious mode. e.g. set this to <tt
+class="FILENAME">1</tt> for true, <tt class="FILENAME">0</tt> for false.</p>
+</li>
+
+<li>
+<p><tt class="COMMAND">mixwaves</tt>: set this to true <tt class="FILENAME">1</tt> if you
+want VoIPong to mix the seperate .WAV files into a single .WAV file. e.g. set this to <tt
+class="FILENAME">1</tt> for true, <tt class="FILENAME">0</tt> for false.</p>
+</li>
+
+<li>
+<p><tt class="COMMAND">snaplen</tt>: maximum number of bytes to capture e.g. <tt
+class="FILENAME">1500</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">readtmt</tt>: specifies the read-from-device timeout in
+milliseconds. e.g. <tt class="FILENAME">500</tt></p>
+</li>
+</ul>
+</div>
+
+<div class="SECT2">
+<h2 class="SECT2"><a id="CONFIG-CFGFILE-FILTERS" name="CONFIG-CFGFILE-FILTERS">5.1.2.
+FILTERS section</a></h2>
+
+<ul>
+<li>
+<p><tt class="COMMAND">startup</tt>: Pcap filter string. This filter will be set during
+startup procedures. To see detailed usage of pcap filters, see pcap(3) manual page. e.g.
+<tt class="FILENAME">"udp"</tt></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="dsom.html" accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="config-netfile.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">Dynamic Shared Object Modules (DSOM)</td>
+<td width="34%" align="center" valign="top">&nbsp;</td>
+<td width="33%" align="right" valign="top">Network - Algorithm mappings: voipongnets</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+

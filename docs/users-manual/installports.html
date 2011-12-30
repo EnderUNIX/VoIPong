@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Installation via BSD ports system</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="UP" title="Installation" href="installation.html" />
+<link rel="PREVIOUS" title="Compilation & Installation" href="compilation.html" />
+<link rel="NEXT" title="Dynamic Shared Object Modules (DSOM)" href="dsom.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="SECT1" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="compilation.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom">Chapter 3. Installation</td>
+<td width="10%" align="right" valign="bottom"><a href="dsom.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="SECT1">
+<h1 class="SECT1"><a id="INSTALLPORTS" name="INSTALLPORTS">3.3. Installation via BSD
+ports system</a></h1>
+
+<p>BSD Operating Systems (FreeBSD, NetBSD, OpenBSD, Darwin etc.) has a ports system for
+easy package administration. VoIPong is a FreeBSD port, so you can install it from
+FreeBSD ports tree. VoIPong is located in <tt
+class="FILENAME">/usr/ports/audio/voipong</tt> directory:</p>
+
+<p>Change your current working directory to <tt
+class="FILENAME">/usr/ports/audio/voipong</tt> and type:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">cd <tt
+class="FILENAME">/usr/ports/audio/voipong</tt></kbd>
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">make install clean</kbd>
+   
+</pre>
+
+FreeBSD will fetch the tarball, uncompress it, compile the sources and install VoIPong
+for you. <br />
+<br />
+<p>Alternatively, you can install VoIPong .tbz package with <tt
+class="COMMAND">pkg_add</tt> (1) command:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">fetch \ 
+        <tt
+class="FILENAME">ftp://ftp.freebsd.org/pub/FreeBSD/releases/i386/5.4-RELEASE/packages/audio/voipong-2.0.tbz</tt></kbd>
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">pkg_add <tt
+class="FILENAME">voipong-2.0.tbz</tt></kbd>
+   
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="compilation.html"
+accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="dsom.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">Compilation &#38; Installation</td>
+<td width="34%" align="center" valign="top"><a href="installation.html"
+accesskey="U">Up</a></td>
+<td width="33%" align="right" valign="top">Dynamic Shared Object Modules (DSOM)</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+

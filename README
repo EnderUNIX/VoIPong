@@ -1,0 +1,30 @@
+
+			EnderUNIX VoIPong 
+		VoIP call detector and voice dumper 
+
+		VoIPong is a utility which detects all Voice Over IP calls
+	on a pipeline, and for those which are G711 encoded, dumps actual
+	conversation to seperate wave files. It supports SIP, H323, Cisco's
+	Skinny Client Protocol, RTP and RTCP.
+
+		It's been written in C language for performance reasons, proved
+	to be running on Solaris, Linux and FreeBSD; though it's thought to compile
+	and run on other platforms as well.
+
+		It's multi-algoritm framework enables users with the ability to
+	suit the best packet matching algorithm for their environment.
+
+		On a 45 Mbit/sec actual network traffic, it's been verified
+	that VoIPong successfully detected all VoIP gateways and the VoIP calls. 
+	CPU utilization during the run has been found ranging between 66% - 80%
+	on a 256MB RAM, Celeron 1700 Mhz Toshiba notebook.
+
+		With it's dynamic framework for coding 3rd party voice codecs,
+	the current decoding capability can be easily extended.
+
+	VoIPong has been awarded the first standing by IBM Turkiye in its Linux Awards
+	2004 competition.
+	
+	Please see INSTALL file in this tarball, and the online User's Manual available at:
+	http://www.enderunix.org/voipong/manual/ to compile and install VoIPong into your
+	system.

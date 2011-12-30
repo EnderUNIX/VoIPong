@@ -1,0 +1,105 @@
+<chapter id="config">
+  <title>Configuration</title>
+
+  <para>
+Configuration files are all installed into VoIPong directory: <filename>/usr/local/etc/voipong</filename>. Main configuration parameters are included in <filename>voipong.conf</filename> file. <filename>voipongnets</filename> file maps network addresses to their proper algorithms. DSOM modules for <emphasis>g711-ulaw</emphasis> and <emphasis>g711-alaw</emphasis> (<filename>modvocoder_pcmu.so</filename>, <filename>modvocoder_pcma.so</filename>) are installed to the path given with the <literal>modpath</literal> configuration file directive.
+  </para>
+
+  <sect1 id="config-cfgfile">
+    <title>Configuration file: voipong.conf</title>
+    <para>
+Runtime configuration parameters vital to the smoothly operation of VoIPong server are defined in <filename>voipong.conf</filename>, formatted as a standart <emphasis>.ini</emphasis> file. There are two sections: <emphasis>GENERAL</emphasis> for general server settings, and <emphasis>FILTERS</emphasis> for setting up startup filters.
+    </para>
+
+    <sect2 id="config-cfgfile-general">
+	<title>GENERAL section</title>
+	<itemizedlist>
+	  <listitem><para><command>logdir</command>: specifies the log directory where voipong will save its logs e.g. <filename>/var/log</filename></para>
+	  </listitem>
+	  <listitem><para><command>logfile</command>: name of the main server log file e.g. <filename>voipong.log</filename></para>
+	  </listitem>
+	  <listitem><para><command>outdir</command>: path where output .WAV and/or .RAW files are to be written. e.g. <filename>/var/log/voipoutput</filename></para>
+	  </listitem>
+	  <listitem><para><command>cdrfile</command>: name of the CDR (Common Data Record) log file e.g. <filename>cdr.log</filename></para>
+	  </listitem>
+	  <listitem><para><command>networksfile</command>: path to the network/algorithm mappings file e.g. <filename>/usr/local/etc/voipong/voipongnets</filename></para>
+	  </listitem>
+	  <listitem><para><command>pidfile</command>: path to the pidfile e.g. <filename>/var/run/voipong.pid</filename></para>
+	  </listitem>
+	  <listitem><para><command>soxpath</command>: path to the sox executable e.g. <filename>/usr/local/bin/sox</filename></para>
+	  </listitem>
+	  <listitem><para><command>modpath</command>: path to the directory where vocoder DSOM modules are installed.  e.g. <filename>/usr/local/etc/voipong/modules</filename></para>
+	  </listitem>
+	  <listitem><para><command>soxmixpath</command>: path to the soxmix executable e.g. <filename>/usr/local/bin/soxmix</filename></para>
+	  </listitem>
+	  <listitem><para><command>mgmt_ipcpath</command>: path to the UNIX domain socket for management console e.g. <filename>/tmp/voipongmgmt.sock</filename></para>
+	  </listitem>
+	  <listitem><para><command>defalg</command>: Default packet matching algorithm. This can currently only be lfp. Other algorithms are to be developed. e.g. <filename>lfp</filename></para>
+	  </listitem>
+	  <listitem><para><command>rtp_idle_time</command>: (in seconds) when this amount of time elapses and no RTP traffic is received for the call, the call is considered to be finished. e.g. <filename>10</filename></para>
+	  </listitem>
+	  <listitem><para><command>device</command>: network device to sniff packets from e.g. <filename>eth0</filename></para>
+	  </listitem>
+	</itemizedlist>
+
+	<itemizedlist>
+	  <listitem><para><command>promisc</command>: set this to true <filename>1</filename> if you want VoIpong to set your sniffing device to promiscious mode. e.g. set this to <filename>1</filename> for true, <filename>0</filename> for false.</para>
+	  </listitem>
+	  <listitem><para><command>mixwaves</command>: set this to true <filename>1</filename> if you want VoIPong to mix the seperate .WAV files into a single .WAV file. e.g. set this to <filename>1</filename> for true, <filename>0</filename> for false.</para>
+	  </listitem>
+	  <listitem><para><command>snaplen</command>: maximum number of bytes to capture e.g. <filename>1500</filename></para>
+	  </listitem>
+	  <listitem><para><command>readtmt</command>: specifies the read-from-device timeout in milliseconds. e.g. <filename>500</filename></para>
+	  </listitem>
+	</itemizedlist>
+    </sect2>
+
+    <sect2 id="config-cfgfile-filters">
+	<title>FILTERS section</title>
+
+	<itemizedlist>
+	  <listitem><para><command>startup</command>: Pcap filter string. This filter will be set during startup procedures. To see detailed usage of pcap filters, see pcap(3) manual page. e.g.  <filename>"udp"</filename></para>
+	  </listitem>
+	</itemizedlist>
+
+    </sect2>
+
+  </sect1>
+
+
+  <sect1 id="config-netfile">
+    <title>Network - Algorithm mappings: voipongnets</title>
+    <para>
+Sniffing out voice is a tough task. You cannot design an algorithm and expect to catch all the VoIP calls. VoIP is relatively new and it is not a highly standardized technology. So there have to be several call catching algorithms for various setups. VoIPong provides a framework where you can set the call catching algorithm which you think will best suit your VoIP infrastructure. This results in a much more specialized and successful call sniffing.
+    </para>
+
+    <sect2 id="config-netfile-lfp">
+	<title>Least False Positive (LFP) algorithm</title>
+	<para>
+This algorithm tries to detect calls generated via VoIP devices conforming to <emphasis>RTP</emphasis> and <emphasis>RTCP</emphasis> RFCs. This algorithm should detect and record a broad range of calls. The most obvious advantage of this algorithm is that you'll have barely no false positives. This is why this method is named as LFP. The #1 disadvantage will be that this will not be able to catch calls if there are no <emphasis>RTCP</emphasis> packets or the devices do not conform to RFCs. To use this algorithm, you will need to specify a network to use with it in your voipongnets file.  
+		<screen>
+<userinput>172.16.1.0/255.255.255.0	lfp</userinput>
+<userinput>10.30.0.0/255.255.252.0	lfp</userinput>
+		</screen>
+	</para>
+    </sect2>
+
+    <sect2 id="config-netfile-fixed">
+	<title>Fixed (Fixed Port) algorithm</title>
+	<para>
+Some VoIP devices (e.g. <emphasis>Grandstream(TM)</emphasis> IP adapters) use a fixed port to send and receive RTP datagrams, and they do not conform to RFCs, and do not send any link control information (RTCP packets). If you have such devices in your network, you can specify their algorithm as fixed in the <filename>voipongnets</filename> file. This algorithm cannot be used with networks, it can only be used with hosts, so netmask address should always be <hostid role="netmask">255.255.255.255</hostid>. Please note that, after the fixed keyword, you are expected to set the fixed port number the device is using. For example, suppose that you have a device which uses port <hostid role="ipaddr">40000</hostid> to send <emphasis>RTP</emphasis> packets, you should add this line to your <filename>voipongnets</filename> file:
+		<screen>
+<userinput>172.16.1.101/255.255.255.255	fixed	40000</userinput>
+		</screen>
+	</para>
+    </sect2>
+
+    <sect2 id="config-netfile-lra">
+	<title>LRA-SIP Algorithm</title>
+	<para>
+LRA-SIP will follow <emphasis>SIP</emphasis> signalling packets, and will spot the RTP/RTCP session from the <emphasis>SDP</emphasis> packets. This algorithm is not implemented yet, however I will be working on it for the next release (probably <replaceable>2.1.?</replaceable>)
+	</para>
+    </sect2>
+    </sect1>
+
+</chapter>

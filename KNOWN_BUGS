@@ -1,0 +1,8 @@
+
+- Some calls might not be detected, see Question 2:
+  http://www.enderunix.org/voipong/index.php?sect=faq&lang=en 
+
+- Only for G711 u-law and G711 a-law payload types will there be
+  .WAV files.
+  
+

@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Example Scenarios</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="PREVIOUS" title="VoIPong Live CD" href="usage-livecd.html" />
+<link rel="NEXT" title="Capturing a Microsoft Netmeeting call"
+href="examples-msnetmeeting.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="CHAPTER" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="usage-livecd.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom"></td>
+<td width="10%" align="right" valign="bottom"><a href="examples-msnetmeeting.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="CHAPTER">
+<h1><a id="EXAMPLES" name="EXAMPLES"></a>Chapter 7. Example Scenarios</h1>
+
+<div class="TOC">
+<dl>
+<dt><b>Table of Contents</b></dt>
+
+<dt>7.1. <a href="examples.html#EXAMPLES-REPLAY">Replaying a previous capture
+file</a></dt>
+
+<dt>7.2. <a href="examples-msnetmeeting.html">Capturing a <span
+class="TRADEMARK">Microsoft</span>&#8482; Netmeeting call</a></dt>
+</dl>
+</div>
+
+<p>You can try VoIPong with Microsoft Netmeeting. Set up netmeeting so that it uses G711
+at both ends, and make a voice call. You'll see the calls captured and wave files created
+after your call finishes.</p>
+
+<p>If you do not have a testbed, do not want so much pain to test VoIPong, you can replay
+a test capture file in your machine and see if it is catched.</p>
+
+<div class="SECT1">
+<h1 class="SECT1"><a id="EXAMPLES-REPLAY" name="EXAMPLES-REPLAY">7.1. Replaying a
+previous capture file</a></h1>
+
+<ul>
+<li>
+<p>Download <a href="http://www.enderunix.org/voipong/endercall2.pcap" target="_top">this
+test call capture</a>, where me and Baris are talking about EnderUNIX team.</p>
+</li>
+
+<li>
+<p>Download and install <a href="http://tcpreplay.sourceforge.net/" target="_top"><tt
+class="COMMAND">tcpreplay</tt></a> tool. Tcpreplay tool reads pcap capture files, and
+re-injects the packets into a live network.</p>
+</li>
+
+<li>
+<p>Start VoIPong</p>
+
+<pre class="SCREEN">
+04/12/05 16:27:20: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+04/12/05 16:27:20: Release 2.0-DEVEL running on efe.enderunix.org [FreeBSD 5.4-STABLE FreeBSD 5.4-STABLE #0: Sun Oct 23 16:39:41 EEST 2005     mb@efe.enderunix.org:/usr/src/sys/i386/compile/EFE i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 1075]
+04/12/05 16:27:20: Default matching algorithm: lfp
+04/12/05 16:27:20: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+04/12/05 16:27:20: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+04/12/05 16:27:20: loaded 2 module(s)
+04/12/05 16:27:20: loadnet(10.30.0.11/255.255.255.255) method: fixed 40000
+04/12/05 16:27:20: em0 has been opened in  promisc mode. (192.168.1.0/255.255.255.0)
+   
+</pre>
+</li>
+
+<li>
+<p>Start <tt class="COMMAND">tcpreplay</tt> with the test capture you just downloaded at
+step 1.</p>
+
+<pre class="SCREEN">
+[root@efe ~/calls/ok]$ /usr/local/sbin/tcpreplay -i em0 endercall2.pcap
+sending on: em0
+ 4534 packets (1344595 bytes) sent in 141.44 seconds
+ 9506.2 bytes/sec 0.07 megabits/sec 32 packets/sec
+   
+</pre>
+</li>
+
+<li>
+<p>You will see that VoIPong immediately starts monitoring your call. Following lines
+will appear in your voipong.log file:</p>
+
+<pre class="SCREEN">
+24/10/05 20:47:23: created a call recording instance!
+24/10/05 20:47:23: [68826] VoIP call has been detected.
+24/10/05 20:47:23: [68826] 10.0.0.145:49604 &#60; -- &#62; 10.0.0.200:49606
+24/10/05 20:47:23: [68826] Encoding 0-PCMU-8KHz, recording.......
+   
+</pre>
+
+<p>At the end of the call, you'll see that two .WAV files are created:</p>
+
+<pre class="SCREEN">
+24/10/05 20:52:52: [68826] maximum idle time [10 secs] has been elapsed for this call, the call might have been ended.
+24/10/05 20:52:52: [68826] .WAV file output/20051204/session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav has been created successfully
+24/10/05 20:52:52: [68826] .WAV file output/20051204/session-enc0-PCMU-8KHz-10.0.0.200,49606-10.0.0.145,49604.wav has been created successfully
+   
+</pre>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">ls /var/log/output/20051024/</kbd>
+session-enc0-PCMU-8KHz-10.0.0.200,49606-10.0.0.145,49604.wav        session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav
+   
+</pre>
+</li>
+
+<li>
+<p>You can play output files with several utilities including <tt class="COMMAND">play,
+xmms</tt> etc.:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">play /var/log/voipoutput/20051025/session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav</kbd>
+   
+</pre>
+</li>
+</ul>
+</div>
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="usage-livecd.html"
+accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="examples-msnetmeeting.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">VoIPong Live CD</td>
+<td width="34%" align="center" valign="top">&nbsp;</td>
+<td width="33%" align="right" valign="top">Capturing a <span
+class="TRADEMARK">Microsoft</span>&#8482; Netmeeting call</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+

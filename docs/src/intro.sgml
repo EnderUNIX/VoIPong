@@ -1,0 +1,20 @@
+<chapter id="intro">
+  <title>Introduction</title>
+
+   <para>
+VoIPong is a sniffer utility which tries to detects Voice Over IP calls on a pipeline, and for those which have vocoder modules loaded, dumps actual conversation to seperate wave files. Currently it can catch calls made via a wide variety of protocols including <emphasis>SIP, H323, Cisco's Skinny Client Protocol</emphasis>. It can also catch calls made through dummy IP adapters which do not do any signalling but transport voice payload via <emphasis>RTP</emphasis> protocol.
+   </para>
+
+   <para>
+It's been written in C language for performance reasons, proved to be running on <emphasis>Solaris, Linux and FreeBSD</emphasis>; though it's thought to compile and run on other platforms as well.
+   </para>
+
+   <para>
+On a 45 Mbit/sec actual network traffic, it's been verified that VoIPong successfully detected all VoIP gateways and the VoIP calls. CPU utilization during the run has been found ranging between 66% - 80% on a 256MB RAM, Celeron 1700 Mhz Toshiba notebook.
+   </para>
+
+   <para>
+   With its powerful and extensible <emphasis>Dynamic Shared Object Modules (DSOM)</emphasis> subsystem, and its related API (will be documented later), new third party voice decoder modules can be coded and installed, resulting in a great flexibility.  By default, VoIPong comes with two pre-written voice decoder modules for calls encoded with <emphasis>G711 (u-law)</emphasis> and <emphasis>G711 (a-law) </emphasis>. Audible output can be generated for calls encoded with any one of them.
+   </para>
+
+</chapter>

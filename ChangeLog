@@ -1,0 +1,82 @@
+
+				VOIPONG ChangeLog
+
+For a recent version of this file, please refer to:
+	http://www.enderunix.org/voipong/voipong-devel/ChangeLog
+
+
+-------------------------------------------------------------------------------
+2.0 BETA [Last Update: Sun Nov 20 15:38:46 EET 2005
+-------------------------------------------------------------------------------
+ - Introduced a framework, where specific algorithms can be specified based on
+   CIDR addresses for perfect packet matching. This results in much more
+   specialized call catching. Thus a configuration file will be used 
+   for the "netaddr - algorithm" specifications (voipongnets).
+
+ - Introduced DSOM (Dynamic Shared Object Module) codec subsystem.
+   Beginning with this release, voice codecs will no longer be linked
+   statically into the voipong executable. Instead, Voice codecs
+   (vocoders) will be compiled as seperate dynamic shared objects (.so). 
+   VoIPong will search those modules in its module directory and
+   load them at runtime during server initialization.
+
+ - Introduced "LFP" (Least False Positive) algorithm which was the only packet
+   matcher in 1.1 as the default algorithm.
+
+ - Introduced "FIXED" algorithm for situations where endpoints do not
+   conform to RTP/RTCP RFCs and, do not send RTCP packets.
+   If your endpoints do not do signalling but send RTP packets to a fixed
+   UDP port, then you can use this algorithm.
+
+ - A newly authored User's Manual available in .html and .sgml forms.
+
+ - PCMU codec has been re-desgined and re-written.
+
+ - Introduced voipctl command to connect to management console.
+
+ - Security improvement: Management console is no longer bound to a 
+   TCP port, instead it's now bound to a UNIX domain socket.
+
+ - Introduced a CDR log file (CSV style). All call summaries will be logged here.
+
+ - G711 PCMA support has been added.
+
+ - Output .Wav files can now be mixed for a single .Wav file. (via soxmix)
+
+ - Startup filters can now be specified.
+
+ - Improved packet demultiplexer
+
+ - Improved output .WAV voice quality
+
+ - Many bugfixes, performance improvements and clean-ups in RTP code
+
+ - Improved job handling
+
+ - Improved hash function
+
+ - Management Console changes:
+   - calllist command renamed to shcall
+   - killsession command renamed to killcall
+   - new command: shrtcp, which shows RTCP cache
+   - new command: loadnets, to reload network-algorithm matching table
+   - new command: setmixflag, to set mixflag
+     This command will enable you to specify new network/algorithm matchings
+     without restarting voipong.
+
+ - voipong.conf, voipongnets will be copied to /usr/local/etc/voipong
+   directory
+
+ - fixed bug: avoid .WAV file creation for empty .RAW files
+
+ - fixed bug: killsession bug
+
+ - fixed bug: proper clean-ups are now done after sniffing worker process
+   finishes up.
+
+-------------------------------------------------------------------------------
+1.1 [December 14, 2004]
+-------------------------------------------------------------------------------
+ - First public release
+
+

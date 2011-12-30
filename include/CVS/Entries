@@ -1,0 +1,16 @@
+/Makefile.am/1.1/Thu Dec  8 10:57:46 2005//
+/conf.h/1.1.1.1/Tue Oct 18 17:28:25 2005//
+/g711.h/1.2/Wed Oct 26 12:28:14 2005//
+/miscutil.h/1.5/Sun Oct 30 14:31:07 2005//
+/osspecific.h/1.1.1.1/Tue Oct 18 17:28:25 2005//
+/voipongcdr.h/1.1/Sat Oct 22 12:00:53 2005//
+/voipongcodec.h/1.2/Sun Oct 23 11:53:49 2005//
+/voipongmgmt.h/1.1.1.1/Tue Oct 18 17:28:26 2005//
+/voipongnet.h/1.2/Sat Oct 22 11:46:28 2005//
+/voipongpcap.h/1.1.1.1/Tue Oct 18 17:28:25 2005//
+/voipongsign.h/1.1.1.1/Tue Oct 18 17:28:25 2005//
+/voipongsock.h/1.1.1.1/Tue Oct 18 17:28:25 2005//
+/voipongvoip.h/1.1.1.1/Tue Oct 18 17:28:26 2005//
+/voipongworker.h/1.4/Mon Nov 14 18:58:21 2005//
+/voipong.h/1.2/Fri Dec  9 15:27:52 2005//
+D

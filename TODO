@@ -1,0 +1,21 @@
+
+
+			VoIPong TODO
+
+* Implement "algorithm SIP" (a.k.a. algorithm lra) , 
+  where VoIPong will trace SIP signalling and catch calls 
+  out of SDP packets.
+
+* VoIPong Distributed: 
+  Redesign and code call recording so that it can be done in a
+  distributed manner
+
+* Collect call statistics out of RTP/RTCP packets.
+
+* Better Cisco Skinny support (i.e. extract phone numbers)
+
+* G726 codec support
+  Investigate further: Ignecio's mail
+
+* G723.1 codec support
+

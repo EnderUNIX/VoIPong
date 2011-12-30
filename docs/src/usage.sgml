@@ -1,0 +1,360 @@
+<chapter id="usage">
+  <title>Usage</title>
+    <para>
+Similar to other sniffer tools at the market, VoIPong needs to get a copy of the voice traffic you're interested in. If you're sharing a <emphasis>hub</emphasis> with one of the endpoints of the voice conversation, you will not need to do anything, since hub devices inherently copy traffic to all its ports. If you are in a <emphasis>switched</emphasis> environment, some network administration will be needed. Most modern switch devices has a handy <emphasis>"monitor port"</emphasis> which you can use for copying traffic going through one or more switch ports. So you'll need to copy one of the endpoints' traffic to that monitor port, and connect the computer on which VoIPong is running. If you're running VoIPong on a <emphasis>gateway machine</emphasis>, where this machine has already access to all the voice traffic, you will not need to do anything.
+    </para>
+
+  <sect1 id="usage-params">
+    <title>Startup Parameters</title>
+	<para>
+You can use <command>-h</command> switch to see available startup parameters:
+	<screen>
+[murat@efe ~/voipong]$ ./voipong -h
+usage: voipong [options]
+options:
+-h this screen
+-v version info
+-f run in foreground (don't become a daemon)
+-d debug level. Valid levels are 0 through 4. Default: 0
+-c config file path
+	</screen>
+<command>-v</command> switch shows VoIPong version information:
+	<screen>
+[murat@efe ~/voipong]$ ./voipong -v
+EnderUNIX VOIPONG Voice Over IP Sniffer Release 2.0-DEVEL
+Copyright (C) 2004 Murat Balaban murat || enderunix.org
+All rights reserved.
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+For more information on licensing, please see LICENSE
+file included in the voipong source distribution.
+[murat@efe ~/voipong]$ 
+	</screen>
+You can set the debug log level by <command>-d</command> switch. Valid levels are <command>0</command> through <command>4</command>, latter being the most verbose.  Default configuration file is <filename>/usr/local/etc/voipong/voipong.conf</filename>. You can use alternate configuration file by issuing <command>-c</command> switch and providing full path to the alternate configuration file. If you don't want VoIPong to daemonize, but instead you want it to stay at your terminal and dump log messages to the terminal, you will need to issue <command>-f</command> switch.
+
+
+	</para>
+	<para>
+So, If you want VoIPong to stay at the terminal, and you want to see as many log messages as possible, you should fire VoIPong as such:
+
+	<screen>
+[root@devel ~]$ voipong -d4 -f
+EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+Release 2.0-DEVEL, running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+(c) Murat Balaban http://www.enderunix.org/
+20/11/05 19:33:33: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+20/11/05 19:33:33: Release 2.0-DEVEL running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 23627]
+20/11/05 19:33:33: Default matching algorithm: lfp
+20/11/05 19:33:33: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+20/11/05 19:33:33: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+20/11/05 19:33:33: loaded 2 module(s)
+20/11/05 19:33:33: loadnet(10.0.0.145/255.255.255.255) method: fixed 49604
+20/11/05 19:33:33: loadnet(172.16.0.10/255.255.0.0) method: lfp 
+20/11/05 19:33:33: fxp0 has been opened in  promisc mode. (43.43.43.0/255.255.255.192)
+	</screen>
+
+	</para>
+  </sect1>
+
+  <sect1 id="usage-voipctl">
+    <title>Management Console: voipctl</title>
+    <para>
+VoIPong provides the user with the ability to administer the server at runtime. You can use <command>voipctl</command> command for this purpose. When fired, <command>voipctl</command> will connect VoIPong and will wait for user's commands:
+    </para>
+    <para>
+	<screen>
+[root@efe ~/voipong]$ voipctl 
+
+Connected to VoIPong Management Console
+
+System:
+efe.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+
+voipong> 
+	</screen>
+
+	<command>help </command> is the same old "help":
+	<screen>
+voipong> help
+Commands:
+help : this one
+quit : quit management console
+uptime : Server uptime
+setdebug [level] : set debug level to [level]
+logrotate : rotate server's logs
+shutdown : shutdown server
+rusage : CPU usage statistics for the server
+loadnets : Reload voipongnets file
+info : General server information
+shcall : Show currently monitored calls
+shrtcp : Show currently RTCP cache
+killcall [id] : end monitoring session with [id]
+voipong> 
+	</screen>
+
+	<command>uptime </command>shows how long the server has been running:
+	<screen>
+voipong> uptime
+Server uptime: 5 minutes 57 seconds
+
+voipong>
+	</screen>
+
+	<command>!!</command>: You can use !! command to issue the last command you typed. (same as in sh):
+	<screen>
+voipong> !!
+Server uptime: 6 minutes 13 seconds
+
+voipong>
+	</screen>
+
+	<command>logrotate </command> command rotates server logs:
+	<screen>
+voipong> logrotate
+Logrotate successfull
+voipong>
+	</screen>
+
+	<command>shutdown </command> command will shutdown the server and close management console connection
+	<screen>
+voipong> shutdown
+	</screen>
+
+	<command>rusage </command> command will give information related to server's CPU utilization
+	<screen>
+voipong> rusage
+
+Current CPU usage stats:
+----------------------------------------
+Total "user" time : 0 seconds
+Total used "system" time : 0 seconds
+Shared Memory Size : 384 KB
+Integral Memory Size : 1512 KB
+Integral stack Size : 1024 KB
+Page requests : 70
+Page errors : 0
+Block input operations : 0
+Block output operations : 2
+Messages sent : 1
+Messages received : 1
+Signals : 0
+Voluntary "context switch"s : 78
+Involuntary "context switch"s : 1
+voipong> 
+	</screen>
+
+
+	<command>loadnets </command> command will re-read voipongnets and re-load network/algorithms mapping table
+	<screen>
+voipong> loadnets
+Networks file has been reloaded successfuly
+voipong>
+	</screen>
+
+	<command>info </command> command will give general server information
+	<screen>
+voipong> info
+
+General Server Info:
+--------------------------:
+Server version : Release 2.0-DEVEL
+System : efe.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+Current work. direct. : /usr/home/murat/voipong
+Log level : 4
+Process ID (PID) : 16240
+User : root [Charlie &]
+Group : 0
+voipong> 
+	</screen>
+
+	<command>setdebug </command> command will change runtime log verbosity
+	<screen>
+voipong> setdebug 4
+# set new debug level to 4
+
+voipong>
+	</screen>
+
+	<command>shcall </command> command will list calls currently monitored
+	<screen>
+voipong> shcall
+
+
+
+ID    NODE1            PORT1 NODE2            PORT2 STIME             DURATION 
+----- ---------------- ----- ---------------- ----- ----------------- ------------
+
+01123 41.27.13.1       12000 31.12.11.8       24000 24/10/05 11:11:23 33 seconds
+
+Total listed: 1
+voipong> 
+	</screen>
+
+	<command>shrtcp </command> command will show current RTCP cache
+	<screen>
+voipong> shrtcp
+
+
+
+ID    NODE1            PORT1 NODE2            PORT2 STIME            
+----- ---------------- ----- ---------------- ----- -----------------
+
+01123 41.27.13.1       12001 31.12.11.8       24001 24/10/05 11:11:23
+
+Total listed: 1
+voipong>
+	</screen>
+
+	<command>killcall </command> will end monitoring the call by id
+	<screen>
+voipong> killcall 2
+transport_simplecmd: server returned error: No such session by ID: 2
+
+cannot process killcall command
+voipong> 
+	</screen>
+
+	<command>q, quit, exit </command> commands will end management session
+	<screen>
+voipong> q
+Bye!
+[root@efe /home/murat/voipong]$ 
+	</screen>
+
+    </para>
+  </sect1>
+
+
+  <sect1 id="usage-nonpriv">
+    <title>Running VoIPong with a non-privileged user</title>
+    <para>
+	It is strongly advised that you avoid running VoIPong with super-user, but use a non-privileged special user created only for it. This section describes the steps you should take to accomplish this. Note that these steps should be done after you compiled and installed VoIPong successfully.
+    </para>
+
+    <itemizedlist>
+	<listitem><para>Create voipong user and group</para>
+	<screen>
+&prompt.root; <userinput>pw group add voipong</userinput>
+&prompt.root; <userinput>pw user add voipong -g voipong -m -s /usr/local/bin/bash</userinput>
+	</screen>
+	</listitem>
+
+
+	<listitem><para>Change ownership of <command>voipong</command>, <command>voipctl</command> and <filename>/usr/local/etc/voipong</filename> directory to voipong user:</para>
+	<screen>
+&prompt.root; <userinput>chown voipong /usr/local/bin/voipong</userinput>
+&prompt.root; <userinput>chown voipong /usr/local/bin/voipctl</userinput>
+&prompt.root; <userinput>chown -R voipong /usr/local/etc/voipong</userinput>
+&prompt.root; <userinput>chgrp -R voipong /usr/local/etc/voipong</userinput>
+	</screen>
+	</listitem>
+
+	<listitem><para>Change ownership of BPF device files (<filename>/dev/bpf*</filename>) to voipong user:</para>
+	<screen>
+&prompt.root; <userinput>chown voipong /dev/bpf*</userinput>
+	</screen>
+	</listitem>
+
+	<listitem><para>Switch user to voipong:</para>
+	<screen>
+&prompt.root; <userinput>su - voipong</userinput>
+To see all of the directories on your FreeBSD system, type
+
+        ls -R / | more
+                -- Dru genesis@istar.ca
+&prompt.user;
+	</screen>
+	</listitem>
+
+	<listitem><para>Create runtime directories:</para>
+	<screen>
+&prompt.user; <userinput>mkdir logs</userinput>
+&prompt.user; <userinput>mkdir output</userinput>
+&prompt.user; <userinput>mkdir run</userinput>
+	</screen>
+	</listitem>
+
+	<listitem><para>Change log, pid and output directory paths to the new directories in <filename>voipong.conf</filename></para>
+	<programlisting>
+logdir = <replaceable>/home/voipong/logs/</replaceable>
+logfile = <replaceable>voipong.log</replaceable>
+outdir = <replaceable>/home/voipong/output/</replaceable>
+cdrfile = <replaceable>/home/voipong/output/voipcdr.log</replaceable>
+pidfile = <replaceable>/home/voipong/run/voipong.pid</replaceable>
+mgmt_ipcpath = <replaceable>/home/voipong/run/voipongmgmt.sock</replaceable>
+	</programlisting>
+	</listitem>
+
+	<listitem><para>You can now run <command>voipong</command></para>
+	<screen>
+&prompt.user; <userinput>id</userinput>
+uid=1042(voipong) gid=1042(voipong) groups=1042(voipong)
+&prompt.user; <userinput>voipong -d4 -f</userinput>
+EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+Release 2.0-DEVEL, running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+(c) Murat Balaban http://www.enderunix.org/
+20/11/05 22:34:03: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+20/11/05 22:34:03: Release 2.0-DEVEL running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 41334]
+20/11/05 22:34:03: Default matching algorithm: lfp
+20/11/05 22:34:03: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+20/11/05 22:34:03: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+20/11/05 22:34:03: loaded 2 module(s)
+20/11/05 22:34:03: loadnet(10.0.0.145/255.255.255.255) method: fixed 49604
+20/11/05 22:34:03: loadnet(172.16.0.10/255.255.0.0) method: lfp 
+20/11/05 22:34:03: fxp0 has been opened in  promisc mode. (43.43.43.0/255.255.255.128)
+	</screen>
+	</listitem>
+
+	<listitem><para>You can check whether the daemon is running with the correct user with <command>voipctl</command></para>
+	<screen>
+&prompt.user; <userinput>id</userinput>
+uid=1042(voipong) gid=1042(voipong) groups=1042(voipong)
+&prompt.user; <userinput>voipctl</userinput>
+
+
+
+Connected to VoIPong Management Console
+
+System:
+devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+
+voipong> info
+
+General Server Info:
+--------------------------:
+Server version            : Release 2.0-DEVEL
+System                    : devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+Current work. direct.     : /usr/home/voipong
+Log level                 : 4
+Mix Voice Flag            : true
+Process ID (PID)          : 41334
+User                      : voipong [VoIPong Kullanicisi]
+Group                     : 1042
+voipong> 
+	</screen>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1 id="usage-livecd">
+    <title>VoIPong Live CD</title>
+	<para>
+	Omer Faruk Sen has maintains VoIPong LiveCD! based on FreeSBIE project. LiveCD is an ISO image which can be burnt into a blank CD directly, and includes pre-installed VoIPong release along with several boot-time scripts for configuring the OS and VoIPong.
+	</para>
+	<para>
+	Please find the gzip'ed ISO images here: 
+	</para>
+	<itemizedlist>
+		<listitem><para><ulink url="http://www.enderunix.org/voipong/voiponglivecd20.iso.gz">Version 2.0</ulink> MD5: 2458d372b0113771eb642987ce0b2f43</para></listitem>
+	</itemizedlist>
+  </sect1>
+
+</chapter>

@@ -1,0 +1,1172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>VoIPong User's Manual</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="BOOK" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="BOOK"><a id="AEN1" name="AEN1"></a>
+<div class="TITLEPAGE">
+<h1 class="TITLE"><a id="AEN2" name="AEN2">VoIPong User's Manual</a></h1>
+
+<h3 class="AUTHOR"><a id="AEN4" name="AEN4"></a>Murat Balaban</h3>
+
+<div class="AFFILIATION">
+<div class="ADDRESS">
+<p class="ADDRESS"><code class="EMAIL">&#60;<a href="mailto:murat ~ enderunix.org">murat
+~ enderunix.org</a>&#62;</code><br />
+</p>
+</div>
+</div>
+
+<p class="COPYRIGHT">Copyright &copy; 2004 , 2005 Murat Balaban. Permission is granted to
+copy, distribute and/or modify this document under the terms of the GNU Free
+Documentation License, Version 1.2 or any later version published by the Free Software
+Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+Texts.</p>
+
+<div class="DOCFORAMTNAVI">[ <a href="./index.html">Split HTML</a> / <a
+href="./book.html">Single HTML</a> ]</div>
+
+<hr />
+</div>
+
+<div class="TOC">
+<dl>
+<dt><b>Table of Contents</b></dt>
+
+<dt>1. <a href="#INTRO">Introduction</a></dt>
+
+<dt>2. <a href="#FEATURES">Features</a></dt>
+
+<dt>3. <a href="#INSTALLATION">Installation</a></dt>
+
+<dd>
+<dl>
+<dt>3.1. <a href="#PREREQUISITES">Before you proceed: Prerequisites</a></dt>
+
+<dt>3.2. <a href="#COMPILATION">Compilation &#38; Installation</a></dt>
+
+<dt>3.3. <a href="#INSTALLPORTS">Installation via BSD ports system</a></dt>
+</dl>
+</dd>
+
+<dt>4. <a href="#DSOM">Dynamic Shared Object Modules (DSOM)</a></dt>
+
+<dt>5. <a href="#CONFIG">Configuration</a></dt>
+
+<dd>
+<dl>
+<dt>5.1. <a href="#CONFIG-CFGFILE">Configuration file: voipong.conf</a></dt>
+
+<dd>
+<dl>
+<dt>5.1.1. <a href="#CONFIG-CFGFILE-GENERAL">GENERAL section</a></dt>
+
+<dt>5.1.2. <a href="#CONFIG-CFGFILE-FILTERS">FILTERS section</a></dt>
+</dl>
+</dd>
+
+<dt>5.2. <a href="#CONFIG-NETFILE">Network - Algorithm mappings: voipongnets</a></dt>
+
+<dd>
+<dl>
+<dt>5.2.1. <a href="#CONFIG-NETFILE-LFP">Least False Positive (LFP) algorithm</a></dt>
+
+<dt>5.2.2. <a href="#CONFIG-NETFILE-FIXED">Fixed (Fixed Port) algorithm</a></dt>
+
+<dt>5.2.3. <a href="#CONFIG-NETFILE-LRA">LRA-SIP Algorithm</a></dt>
+</dl>
+</dd>
+</dl>
+</dd>
+
+<dt>6. <a href="#USAGE">Usage</a></dt>
+
+<dd>
+<dl>
+<dt>6.1. <a href="#USAGE-PARAMS">Startup Parameters</a></dt>
+
+<dt>6.2. <a href="#USAGE-VOIPCTL">Management Console: voipctl</a></dt>
+
+<dt>6.3. <a href="#USAGE-NONPRIV">Running VoIPong with a non-privileged user</a></dt>
+
+<dt>6.4. <a href="#USAGE-LIVECD">VoIPong Live CD</a></dt>
+</dl>
+</dd>
+
+<dt>7. <a href="#EXAMPLES">Example Scenarios</a></dt>
+
+<dd>
+<dl>
+<dt>7.1. <a href="#EXAMPLES-REPLAY">Replaying a previous capture file</a></dt>
+
+<dt>7.2. <a href="#EXAMPLES-MSNETMEETING">Capturing a <span
+class="TRADEMARK">Microsoft</span>&#8482; Netmeeting call</a></dt>
+</dl>
+</dd>
+
+<dt>8. <a href="#FAQ">Frequently Asked Questions</a></dt>
+
+<dt>9. <a href="#THANKS">Thanks</a></dt>
+</dl>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="INTRO" name="INTRO"></a>Chapter 1. Introduction</h1>
+
+<p>VoIPong is a sniffer utility which tries to detects Voice Over IP calls on a pipeline,
+and for those which have vocoder modules loaded, dumps actual conversation to seperate
+wave files. Currently it can catch calls made via a wide variety of protocols including
+<span class="emphasis"><i class="EMPHASIS">SIP, H323, Cisco's Skinny Client
+Protocol</i></span>. It can also catch calls made through dummy IP adapters which do not
+do any signalling but transport voice payload via <span class="emphasis"><i
+class="EMPHASIS">RTP</i></span> protocol.</p>
+
+<p>It's been written in C language for performance reasons, proved to be running on <span
+class="emphasis"><i class="EMPHASIS">Solaris, Linux and FreeBSD</i></span>; though it's
+thought to compile and run on other platforms as well.</p>
+
+<p>On a 45 Mbit/sec actual network traffic, it's been verified that VoIPong successfully
+detected all VoIP gateways and the VoIP calls. CPU utilization during the run has been
+found ranging between 66% - 80% on a 256MB RAM, Celeron 1700 Mhz Toshiba notebook.</p>
+
+<p>With its powerful and extensible <span class="emphasis"><i class="EMPHASIS">Dynamic
+Shared Object Modules (DSOM)</i></span> subsystem, and its related API (will be
+documented later), new third party voice decoder modules can be coded and installed,
+resulting in a great flexibility. By default, VoIPong comes with two pre-written voice
+decoder modules for calls encoded with <span class="emphasis"><i class="EMPHASIS">G711
+(u-law)</i></span> and <span class="emphasis"><i class="EMPHASIS">G711 (a-law)</i></span>
+. Audible output can be generated for calls encoded with any one of them.</p>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="FEATURES" name="FEATURES"></a>Chapter 2. Features</h1>
+
+<ul>
+<li>
+<p>Simple, optimized, extendable, fast code</p>
+</li>
+
+<li>
+<p>Easy debugging</p>
+</li>
+
+<li>
+<p>Easy installation and administration</p>
+</li>
+
+<li>
+<p>Powerful management console (voipctl) for run-time server administration</p>
+</li>
+
+<li>
+<p>Detailed logging</p>
+</li>
+
+<li>
+<p>CSV style CDR (Call Detail Record) logs</p>
+</li>
+
+<li>
+<p>Dynamic framework for multiple call-catching algorithms to co-exist together</p>
+</li>
+
+<li>
+<p>Dynamic Shared Object Modules <span class="emphasis"><i
+class="EMPHASIS">(DSOM)</i></span> for loading of third party voice codec modules at
+runtime.</p>
+</li>
+
+<li>
+<p>Users can choose the best algorithm to suit their networks.</p>
+</li>
+
+<li>
+<p>Produces audible output (.wav) for G711 (u-law) and G711 (a-law) codecs.</p>
+</li>
+
+<li>
+<p>Output can be merged into one single file <span class="emphasis"><i
+class="EMPHASIS">via soxmix</i></span>.</p>
+</li>
+</ul>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="INSTALLATION" name="INSTALLATION"></a>Chapter 3. Installation</h1>
+
+<div class="SECT1">
+<h2 class="SECT1"><a id="PREREQUISITES" name="PREREQUISITES">3.1. Before you proceed:
+Prerequisites</a></h2>
+
+<p>You should have <tt class="COMMAND">pcap</tt> library installed beforehand. Please
+download <tt class="COMMAND">libpcap</tt> from <a href="http://www.tcpdump.org"
+target="_top">tcpdump.org</a> and install it if you don't have it in your system. Please
+note that most Operating Systems and Linux distributions provide this library in their
+default installations.</p>
+
+<p>Also, for .WAV file creation, you should have <tt class="COMMAND">sox</tt> and <tt
+class="COMMAND">soxmix</tt> tools installed. If you don't have those, please download
+them from <a href="http://sox.sourceforge.net" target="_top">sox.sourceforge.net</a> and
+install it in your system.</p>
+</div>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="COMPILATION" name="COMPILATION">3.2. Compilation &#38;
+Installation</a></h2>
+
+<p>Download the latest VoIPong tarball from <a
+href="http://www.enderunix.org/voipong/index.php?sect=download"
+target="_top">EnderUNIX</a> and uncompress it:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">tar zxvf <tt
+class="FILENAME">voipong-<var class="REPLACEABLE">version</var>.tar.gz</tt></kbd>
+   
+</pre>
+
+There are several pre-written <tt class="FILENAME">Makefile</tt> files in the source
+directory. Examine each of them and choose the one which most suits your system. If
+you're running of the the BSD type Operating Systems (i.e. FreeBSD, OpenBSD, NetBSD, Mac
+OSX) copy <tt class="FILENAME">Makefile.bsd</tt> as <tt class="FILENAME">Makefile</tt>;
+if you're using a Linux distribution then, copy <tt class="FILENAME">Makefile.linux</tt>
+as <tt class="FILENAME">Makefile</tt>. You might need to change <var
+class="LITERAL">CFLAGS</var> and <var class="LITERAL">LDFLAGS</var> variables
+accordingly: 
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">cp Makefile.bsd Makefile</kbd>
+   
+</pre>
+
+Type <tt class="COMMAND">make</tt> to compile <tt class="FILENAME">voipong</tt>, <tt
+class="FILENAME">voipctl</tt> and voice decoder modules: 
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">make</kbd>
+   
+</pre>
+
+Type <tt class="COMMAND">make install</tt> to copy compiled binaries, shared modules,
+configuration files, manual pages and related documentation into the proper locations: 
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">make install</kbd> 
+   
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="INSTALLPORTS" name="INSTALLPORTS">3.3. Installation via BSD
+ports system</a></h2>
+
+<p>BSD Operating Systems (FreeBSD, NetBSD, OpenBSD, Darwin etc.) has a ports system for
+easy package administration. VoIPong is a FreeBSD port, so you can install it from
+FreeBSD ports tree. VoIPong is located in <tt
+class="FILENAME">/usr/ports/audio/voipong</tt> directory:</p>
+
+<p>Change your current working directory to <tt
+class="FILENAME">/usr/ports/audio/voipong</tt> and type:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">cd <tt
+class="FILENAME">/usr/ports/audio/voipong</tt></kbd>
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">make install clean</kbd>
+   
+</pre>
+
+FreeBSD will fetch the tarball, uncompress it, compile the sources and install VoIPong
+for you. <br />
+<br />
+<p>Alternatively, you can install VoIPong .tbz package with <tt
+class="COMMAND">pkg_add</tt> (1) command:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">fetch \ 
+        <tt
+class="FILENAME">ftp://ftp.freebsd.org/pub/FreeBSD/releases/i386/5.4-RELEASE/packages/audio/voipong-2.0.tbz</tt></kbd>
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">pkg_add <tt
+class="FILENAME">voipong-2.0.tbz</tt></kbd>
+   
+</pre>
+
+<br />
+<br />
+</div>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="DSOM" name="DSOM"></a>Chapter 4. Dynamic Shared Object Modules (DSOM)</h1>
+
+<p>Since release 2.0 upwards, VoIPong provides a powerful dynamic framework for loading
+of 3rd party voice decoders into the running voipong executable at runtime. This is
+called Dynamic Shared Object Modules (DSOM) Framework. Simply put, DSOM vocoder modules
+are shared libraries with the <tt class="FILENAME">.so</tt> extension. VoIPong looks for
+those shared libraries in the preconfigured <var class="LITERAL">modpath</var> directory,
+loads them one by one. DSOM engine resident at VoIPong core, spots the initialization
+method in the shared module and invokes it allowing the module to register itself inside
+VoIPong runtime environment:</p>
+
+<pre class="SCREEN">
+07/12/05 13:29:25: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2813e370)
+07/12/05 13:29:25: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x28140390)
+07/12/05 13:29:25: loaded 2 module(s)
+   
+</pre>
+
+<br />
+<br />
+<p>For security reasons, the DSOMs are expected to be owned by the same user and group
+who is running the core VoIPong executable. For instance, if the user running the program
+has uid 1000 and gid 10; the modules should also be owned by uid 1000 and gid 10.</p>
+
+<p>The naming convention is that the modules should start with the <var
+class="LITERAL">modvocoder_</var> keyword, and should include the name of the decoder in
+the module, followed by the <var class="LITERAL">.so</var> extension. For example, the
+correct name for the g711 (u-law) module can be <tt
+class="FILENAME">modvocoder_pcmu.so</tt>.</p>
+
+<p>There are two pre-written voice decoder modules with VoIPong release 2.0:</p>
+
+<ul>
+<li>
+<p><tt class="FILENAME">modvocoder_pcmu.so</tt>: g711 (u-law) decoder (payload type
+0)</p>
+</li>
+
+<li>
+<p><tt class="FILENAME">modvocoder_pcma.so</tt>: g711 (a-law) decoder (payload type
+8)</p>
+</li>
+</ul>
+
+<br />
+<br />
+<p>To code and install your own vocoder module (i.e. for g726), VoIPong DSOM Decoder
+Writer's Guide will be available soon.</p>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="CONFIG" name="CONFIG"></a>Chapter 5. Configuration</h1>
+
+<p>Configuration files are all installed into VoIPong directory: <tt
+class="FILENAME">/usr/local/etc/voipong</tt>. Main configuration parameters are included
+in <tt class="FILENAME">voipong.conf</tt> file. <tt class="FILENAME">voipongnets</tt>
+file maps network addresses to their proper algorithms. DSOM modules for <span
+class="emphasis"><i class="EMPHASIS">g711-ulaw</i></span> and <span class="emphasis"><i
+class="EMPHASIS">g711-alaw</i></span> (<tt class="FILENAME">modvocoder_pcmu.so</tt>, <tt
+class="FILENAME">modvocoder_pcma.so</tt>) are installed to the path given with the <var
+class="LITERAL">modpath</var> configuration file directive.</p>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="CONFIG-CFGFILE" name="CONFIG-CFGFILE">5.1. Configuration file:
+voipong.conf</a></h2>
+
+<p>Runtime configuration parameters vital to the smoothly operation of VoIPong server are
+defined in <tt class="FILENAME">voipong.conf</tt>, formatted as a standart <span
+class="emphasis"><i class="EMPHASIS">.ini</i></span> file. There are two sections: <span
+class="emphasis"><i class="EMPHASIS">GENERAL</i></span> for general server settings, and
+<span class="emphasis"><i class="EMPHASIS">FILTERS</i></span> for setting up startup
+filters.</p>
+
+<div class="SECT2">
+<hr />
+<h3 class="SECT2"><a id="CONFIG-CFGFILE-GENERAL" name="CONFIG-CFGFILE-GENERAL">5.1.1.
+GENERAL section</a></h3>
+
+<ul>
+<li>
+<p><tt class="COMMAND">logdir</tt>: specifies the log directory where voipong will save
+its logs e.g. <tt class="FILENAME">/var/log</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">logfile</tt>: name of the main server log file e.g. <tt
+class="FILENAME">voipong.log</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">outdir</tt>: path where output .WAV and/or .RAW files are to be
+written. e.g. <tt class="FILENAME">/var/log/voipoutput</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">cdrfile</tt>: name of the CDR (Common Data Record) log file e.g.
+<tt class="FILENAME">cdr.log</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">networksfile</tt>: path to the network/algorithm mappings file
+e.g. <tt class="FILENAME">/usr/local/etc/voipong/voipongnets</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">pidfile</tt>: path to the pidfile e.g. <tt
+class="FILENAME">/var/run/voipong.pid</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">soxpath</tt>: path to the sox executable e.g. <tt
+class="FILENAME">/usr/local/bin/sox</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">modpath</tt>: path to the directory where vocoder DSOM modules are
+installed. e.g. <tt class="FILENAME">/usr/local/etc/voipong/modules</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">soxmixpath</tt>: path to the soxmix executable e.g. <tt
+class="FILENAME">/usr/local/bin/soxmix</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">mgmt_ipcpath</tt>: path to the UNIX domain socket for management
+console e.g. <tt class="FILENAME">/tmp/voipongmgmt.sock</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">defalg</tt>: Default packet matching algorithm. This can currently
+only be lfp. Other algorithms are to be developed. e.g. <tt class="FILENAME">lfp</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">rtp_idle_time</tt>: (in seconds) when this amount of time elapses
+and no RTP traffic is received for the call, the call is considered to be finished. e.g.
+<tt class="FILENAME">10</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">device</tt>: network device to sniff packets from e.g. <tt
+class="FILENAME">eth0</tt></p>
+</li>
+</ul>
+
+<ul>
+<li>
+<p><tt class="COMMAND">promisc</tt>: set this to true <tt class="FILENAME">1</tt> if you
+want VoIpong to set your sniffing device to promiscious mode. e.g. set this to <tt
+class="FILENAME">1</tt> for true, <tt class="FILENAME">0</tt> for false.</p>
+</li>
+
+<li>
+<p><tt class="COMMAND">mixwaves</tt>: set this to true <tt class="FILENAME">1</tt> if you
+want VoIPong to mix the seperate .WAV files into a single .WAV file. e.g. set this to <tt
+class="FILENAME">1</tt> for true, <tt class="FILENAME">0</tt> for false.</p>
+</li>
+
+<li>
+<p><tt class="COMMAND">snaplen</tt>: maximum number of bytes to capture e.g. <tt
+class="FILENAME">1500</tt></p>
+</li>
+
+<li>
+<p><tt class="COMMAND">readtmt</tt>: specifies the read-from-device timeout in
+milliseconds. e.g. <tt class="FILENAME">500</tt></p>
+</li>
+</ul>
+</div>
+
+<div class="SECT2">
+<hr />
+<h3 class="SECT2"><a id="CONFIG-CFGFILE-FILTERS" name="CONFIG-CFGFILE-FILTERS">5.1.2.
+FILTERS section</a></h3>
+
+<ul>
+<li>
+<p><tt class="COMMAND">startup</tt>: Pcap filter string. This filter will be set during
+startup procedures. To see detailed usage of pcap filters, see pcap(3) manual page. e.g.
+<tt class="FILENAME">"udp"</tt></p>
+</li>
+</ul>
+</div>
+</div>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="CONFIG-NETFILE" name="CONFIG-NETFILE">5.2. Network - Algorithm
+mappings: voipongnets</a></h2>
+
+<p>Sniffing out voice is a tough task. You cannot design an algorithm and expect to catch
+all the VoIP calls. VoIP is relatively new and it is not a highly standardized
+technology. So there have to be several call catching algorithms for various setups.
+VoIPong provides a framework where you can set the call catching algorithm which you
+think will best suit your VoIP infrastructure. This results in a much more specialized
+and successful call sniffing.</p>
+
+<div class="SECT2">
+<hr />
+<h3 class="SECT2"><a id="CONFIG-NETFILE-LFP" name="CONFIG-NETFILE-LFP">5.2.1. Least False
+Positive (LFP) algorithm</a></h3>
+
+<p>This algorithm tries to detect calls generated via VoIP devices conforming to <span
+class="emphasis"><i class="EMPHASIS">RTP</i></span> and <span class="emphasis"><i
+class="EMPHASIS">RTCP</i></span> RFCs. This algorithm should detect and record a broad
+range of calls. The most obvious advantage of this algorithm is that you'll have barely
+no false positives. This is why this method is named as LFP. The #1 disadvantage will be
+that this will not be able to catch calls if there are no <span class="emphasis"><i
+class="EMPHASIS">RTCP</i></span> packets or the devices do not conform to RFCs. To use
+this algorithm, you will need to specify a network to use with it in your voipongnets
+file.</p>
+
+<pre class="SCREEN">
+<kbd class="USERINPUT">172.16.1.0/255.255.255.0   lfp</kbd>
+<kbd class="USERINPUT">10.30.0.0/255.255.252.0    lfp</kbd>
+       
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="SECT2">
+<hr />
+<h3 class="SECT2"><a id="CONFIG-NETFILE-FIXED" name="CONFIG-NETFILE-FIXED">5.2.2. Fixed
+(Fixed Port) algorithm</a></h3>
+
+<p>Some VoIP devices (e.g. <span class="emphasis"><i
+class="EMPHASIS">Grandstream(TM)</i></span> IP adapters) use a fixed port to send and
+receive RTP datagrams, and they do not conform to RFCs, and do not send any link control
+information (RTCP packets). If you have such devices in your network, you can specify
+their algorithm as fixed in the <tt class="FILENAME">voipongnets</tt> file. This
+algorithm cannot be used with networks, it can only be used with hosts, so netmask
+address should always be <tt class="HOSTID">255.255.255.255</tt>. Please note that, after
+the fixed keyword, you are expected to set the fixed port number the device is using. For
+example, suppose that you have a device which uses port <tt class="HOSTID">40000</tt> to
+send <span class="emphasis"><i class="EMPHASIS">RTP</i></span> packets, you should add
+this line to your <tt class="FILENAME">voipongnets</tt> file:</p>
+
+<pre class="SCREEN">
+<kbd class="USERINPUT">172.16.1.101/255.255.255.255   fixed   40000</kbd>
+       
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="SECT2">
+<hr />
+<h3 class="SECT2"><a id="CONFIG-NETFILE-LRA" name="CONFIG-NETFILE-LRA">5.2.3. LRA-SIP
+Algorithm</a></h3>
+
+<p>LRA-SIP will follow <span class="emphasis"><i class="EMPHASIS">SIP</i></span>
+signalling packets, and will spot the RTP/RTCP session from the <span class="emphasis"><i
+class="EMPHASIS">SDP</i></span> packets. This algorithm is not implemented yet, however I
+will be working on it for the next release (probably <var
+class="REPLACEABLE">2.1.?</var>)</p>
+</div>
+</div>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="USAGE" name="USAGE"></a>Chapter 6. Usage</h1>
+
+<p>Similar to other sniffer tools at the market, VoIPong needs to get a copy of the voice
+traffic you're interested in. If you're sharing a <span class="emphasis"><i
+class="EMPHASIS">hub</i></span> with one of the endpoints of the voice conversation, you
+will not need to do anything, since hub devices inherently copy traffic to all its ports.
+If you are in a <span class="emphasis"><i class="EMPHASIS">switched</i></span>
+environment, some network administration will be needed. Most modern switch devices has a
+handy <span class="emphasis"><i class="EMPHASIS">"monitor port"</i></span> which you can
+use for copying traffic going through one or more switch ports. So you'll need to copy
+one of the endpoints' traffic to that monitor port, and connect the computer on which
+VoIPong is running. If you're running VoIPong on a <span class="emphasis"><i
+class="EMPHASIS">gateway machine</i></span>, where this machine has already access to all
+the voice traffic, you will not need to do anything.</p>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="USAGE-PARAMS" name="USAGE-PARAMS">6.1. Startup
+Parameters</a></h2>
+
+<p>You can use <tt class="COMMAND">-h</tt> switch to see available startup
+parameters:</p>
+
+<pre class="SCREEN">
+[murat@efe ~/voipong]$ ./voipong -h
+usage: voipong [options]
+options:
+-h this screen
+-v version info
+-f run in foreground (don't become a daemon)
+-d debug level. Valid levels are 0 through 4. Default: 0
+-c config file path
+   
+</pre>
+
+<tt class="COMMAND">-v</tt> switch shows VoIPong version information: 
+
+<pre class="SCREEN">
+[murat@efe ~/voipong]$ ./voipong -v
+EnderUNIX VOIPONG Voice Over IP Sniffer Release 2.0-DEVEL
+Copyright (C) 2004 Murat Balaban murat || enderunix.org
+All rights reserved.
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+For more information on licensing, please see LICENSE
+file included in the voipong source distribution.
+[murat@efe ~/voipong]$ 
+   
+</pre>
+
+You can set the debug log level by <tt class="COMMAND">-d</tt> switch. Valid levels are
+<tt class="COMMAND">0</tt> through <tt class="COMMAND">4</tt>, latter being the most
+verbose. Default configuration file is <tt
+class="FILENAME">/usr/local/etc/voipong/voipong.conf</tt>. You can use alternate
+configuration file by issuing <tt class="COMMAND">-c</tt> switch and providing full path
+to the alternate configuration file. If you don't want VoIPong to daemonize, but instead
+you want it to stay at your terminal and dump log messages to the terminal, you will need
+to issue <tt class="COMMAND">-f</tt> switch. <br />
+<br />
+<p>So, If you want VoIPong to stay at the terminal, and you want to see as many log
+messages as possible, you should fire VoIPong as such:</p>
+
+<pre class="SCREEN">
+[root@devel ~]$ voipong -d4 -f
+EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+Release 2.0-DEVEL, running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+(c) Murat Balaban http://www.enderunix.org/
+20/11/05 19:33:33: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+20/11/05 19:33:33: Release 2.0-DEVEL running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 23627]
+20/11/05 19:33:33: Default matching algorithm: lfp
+20/11/05 19:33:33: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+20/11/05 19:33:33: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+20/11/05 19:33:33: loaded 2 module(s)
+20/11/05 19:33:33: loadnet(10.0.0.145/255.255.255.255) method: fixed 49604
+20/11/05 19:33:33: loadnet(172.16.0.10/255.255.0.0) method: lfp 
+20/11/05 19:33:33: fxp0 has been opened in  promisc mode. (43.43.43.0/255.255.255.192)
+   
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="USAGE-VOIPCTL" name="USAGE-VOIPCTL">6.2. Management Console:
+voipctl</a></h2>
+
+<p>VoIPong provides the user with the ability to administer the server at runtime. You
+can use <tt class="COMMAND">voipctl</tt> command for this purpose. When fired, <tt
+class="COMMAND">voipctl</tt> will connect VoIPong and will wait for user's commands:</p>
+
+<p></p>
+
+<pre class="SCREEN">
+[root@efe ~/voipong]$ voipctl 
+
+Connected to VoIPong Management Console
+
+System:
+efe.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">help</tt> is the same old "help": 
+
+<pre class="SCREEN">
+voipong&#62; help
+Commands:
+help : this one
+quit : quit management console
+uptime : Server uptime
+setdebug [level] : set debug level to [level]
+logrotate : rotate server's logs
+shutdown : shutdown server
+rusage : CPU usage statistics for the server
+loadnets : Reload voipongnets file
+info : General server information
+shcall : Show currently monitored calls
+shrtcp : Show currently RTCP cache
+killcall [id] : end monitoring session with [id]
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">uptime</tt> shows how long the server has been running: 
+
+<pre class="SCREEN">
+voipong&#62; uptime
+Server uptime: 5 minutes 57 seconds
+
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">!!</tt>: You can use !! command to issue the last command you typed.
+(same as in sh): 
+
+<pre class="SCREEN">
+voipong&#62; !!
+Server uptime: 6 minutes 13 seconds
+
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">logrotate</tt> command rotates server logs: 
+
+<pre class="SCREEN">
+voipong&#62; logrotate
+Logrotate successfull
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">shutdown</tt> command will shutdown the server and close management
+console connection 
+
+<pre class="SCREEN">
+voipong&#62; shutdown
+   
+</pre>
+
+<tt class="COMMAND">rusage</tt> command will give information related to server's CPU
+utilization 
+
+<pre class="SCREEN">
+voipong&#62; rusage
+
+Current CPU usage stats:
+----------------------------------------
+Total "user" time : 0 seconds
+Total used "system" time : 0 seconds
+Shared Memory Size : 384 KB
+Integral Memory Size : 1512 KB
+Integral stack Size : 1024 KB
+Page requests : 70
+Page errors : 0
+Block input operations : 0
+Block output operations : 2
+Messages sent : 1
+Messages received : 1
+Signals : 0
+Voluntary "context switch"s : 78
+Involuntary "context switch"s : 1
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">loadnets</tt> command will re-read voipongnets and re-load
+network/algorithms mapping table 
+
+<pre class="SCREEN">
+voipong&#62; loadnets
+Networks file has been reloaded successfuly
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">info</tt> command will give general server information 
+
+<pre class="SCREEN">
+voipong&#62; info
+
+General Server Info:
+--------------------------:
+Server version : Release 2.0-DEVEL
+System : efe.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+Current work. direct. : /usr/home/murat/voipong
+Log level : 4
+Process ID (PID) : 16240
+User : root [Charlie &#38;]
+Group : 0
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">setdebug</tt> command will change runtime log verbosity 
+
+<pre class="SCREEN">
+voipong&#62; setdebug 4
+# set new debug level to 4
+
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">shcall</tt> command will list calls currently monitored 
+
+<pre class="SCREEN">
+voipong&#62; shcall
+
+
+
+ID    NODE1            PORT1 NODE2            PORT2 STIME             DURATION 
+----- ---------------- ----- ---------------- ----- ----------------- ------------
+
+01123 41.27.13.1       12000 31.12.11.8       24000 24/10/05 11:11:23 33 seconds
+
+Total listed: 1
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">shrtcp</tt> command will show current RTCP cache 
+
+<pre class="SCREEN">
+voipong&#62; shrtcp
+
+
+
+ID    NODE1            PORT1 NODE2            PORT2 STIME            
+----- ---------------- ----- ---------------- ----- -----------------
+
+01123 41.27.13.1       12001 31.12.11.8       24001 24/10/05 11:11:23
+
+Total listed: 1
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">killcall</tt> will end monitoring the call by id 
+
+<pre class="SCREEN">
+voipong&#62; killcall 2
+transport_simplecmd: server returned error: No such session by ID: 2
+
+cannot process killcall command
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">q, quit, exit</tt> commands will end management session 
+
+<pre class="SCREEN">
+voipong&#62; q
+Bye!
+[root@efe /home/murat/voipong]$ 
+   
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="USAGE-NONPRIV" name="USAGE-NONPRIV">6.3. Running VoIPong with a
+non-privileged user</a></h2>
+
+<p>It is strongly advised that you avoid running VoIPong with super-user, but use a
+non-privileged special user created only for it. This section describes the steps you
+should take to accomplish this. Note that these steps should be done after you compiled
+and installed VoIPong successfully.</p>
+
+<ul>
+<li>
+<p>Create voipong user and group</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">pw group add voipong</kbd>
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">pw user add voipong -g voipong -m -s /usr/local/bin/bash</kbd>
+   
+</pre>
+</li>
+
+<li>
+<p>Change ownership of <tt class="COMMAND">voipong</tt>, <tt class="COMMAND">voipctl</tt>
+and <tt class="FILENAME">/usr/local/etc/voipong</tt> directory to voipong user:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">chown voipong /usr/local/bin/voipong</kbd>
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">chown voipong /usr/local/bin/voipctl</kbd>
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">chown -R voipong /usr/local/etc/voipong</kbd>
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">chgrp -R voipong /usr/local/etc/voipong</kbd>
+   
+</pre>
+</li>
+
+<li>
+<p>Change ownership of BPF device files (<tt class="FILENAME">/dev/bpf*</tt>) to voipong
+user:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">chown voipong /dev/bpf*</kbd>
+   
+</pre>
+</li>
+
+<li>
+<p>Switch user to voipong:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">su - voipong</kbd>
+To see all of the directories on your FreeBSD system, type
+
+        ls -R / | more
+                -- Dru genesis@istar.ca
+<samp class="PROMPT">%</samp>
+   
+</pre>
+</li>
+
+<li>
+<p>Create runtime directories:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">mkdir logs</kbd>
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">mkdir output</kbd>
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">mkdir run</kbd>
+   
+</pre>
+</li>
+
+<li>
+<p>Change log, pid and output directory paths to the new directories in <tt
+class="FILENAME">voipong.conf</tt></p>
+
+<pre class="PROGRAMLISTING">
+logdir = <var class="REPLACEABLE">/home/voipong/logs/</var>
+logfile = <var class="REPLACEABLE">voipong.log</var>
+outdir = <var class="REPLACEABLE">/home/voipong/output/</var>
+cdrfile = <var class="REPLACEABLE">/home/voipong/output/voipcdr.log</var>
+pidfile = <var class="REPLACEABLE">/home/voipong/run/voipong.pid</var>
+mgmt_ipcpath = <var class="REPLACEABLE">/home/voipong/run/voipongmgmt.sock</var>
+   
+</pre>
+</li>
+
+<li>
+<p>You can now run <tt class="COMMAND">voipong</tt></p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">id</kbd>
+uid=1042(voipong) gid=1042(voipong) groups=1042(voipong)
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">voipong -d4 -f</kbd>
+EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+Release 2.0-DEVEL, running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+(c) Murat Balaban http://www.enderunix.org/
+20/11/05 22:34:03: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+20/11/05 22:34:03: Release 2.0-DEVEL running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 41334]
+20/11/05 22:34:03: Default matching algorithm: lfp
+20/11/05 22:34:03: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+20/11/05 22:34:03: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+20/11/05 22:34:03: loaded 2 module(s)
+20/11/05 22:34:03: loadnet(10.0.0.145/255.255.255.255) method: fixed 49604
+20/11/05 22:34:03: loadnet(172.16.0.10/255.255.0.0) method: lfp 
+20/11/05 22:34:03: fxp0 has been opened in  promisc mode. (43.43.43.0/255.255.255.128)
+   
+</pre>
+</li>
+
+<li>
+<p>You can check whether the daemon is running with the correct user with <tt
+class="COMMAND">voipctl</tt></p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">id</kbd>
+uid=1042(voipong) gid=1042(voipong) groups=1042(voipong)
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">voipctl</kbd>
+
+
+
+Connected to VoIPong Management Console
+
+System:
+devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+
+voipong&#62; info
+
+General Server Info:
+--------------------------:
+Server version            : Release 2.0-DEVEL
+System                    : devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+Current work. direct.     : /usr/home/voipong
+Log level                 : 4
+Mix Voice Flag            : true
+Process ID (PID)          : 41334
+User                      : voipong [VoIPong Kullanicisi]
+Group                     : 1042
+voipong&#62; 
+   
+</pre>
+</li>
+</ul>
+</div>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="USAGE-LIVECD" name="USAGE-LIVECD">6.4. VoIPong Live CD</a></h2>
+
+<p>Omer Faruk Sen has maintains VoIPong LiveCD! based on FreeSBIE project. LiveCD is an
+ISO image which can be burnt into a blank CD directly, and includes pre-installed VoIPong
+release along with several boot-time scripts for configuring the OS and VoIPong.</p>
+
+<p>Please find the gzip'ed ISO images here:</p>
+
+<ul>
+<li>
+<p><a href="http://www.enderunix.org/voipong/voiponglivecd20.iso.gz"
+target="_top">Version 2.0</a> MD5: 2458d372b0113771eb642987ce0b2f43</p>
+</li>
+</ul>
+</div>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="EXAMPLES" name="EXAMPLES"></a>Chapter 7. Example Scenarios</h1>
+
+<p>You can try VoIPong with Microsoft Netmeeting. Set up netmeeting so that it uses G711
+at both ends, and make a voice call. You'll see the calls captured and wave files created
+after your call finishes.</p>
+
+<p>If you do not have a testbed, do not want so much pain to test VoIPong, you can replay
+a test capture file in your machine and see if it is catched.</p>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="EXAMPLES-REPLAY" name="EXAMPLES-REPLAY">7.1. Replaying a
+previous capture file</a></h2>
+
+<ul>
+<li>
+<p>Download <a href="http://www.enderunix.org/voipong/endercall2.pcap" target="_top">this
+test call capture</a>, where me and Baris are talking about EnderUNIX team.</p>
+</li>
+
+<li>
+<p>Download and install <a href="http://tcpreplay.sourceforge.net/" target="_top"><tt
+class="COMMAND">tcpreplay</tt></a> tool. Tcpreplay tool reads pcap capture files, and
+re-injects the packets into a live network.</p>
+</li>
+
+<li>
+<p>Start VoIPong</p>
+
+<pre class="SCREEN">
+04/12/05 16:27:20: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+04/12/05 16:27:20: Release 2.0-DEVEL running on efe.enderunix.org [FreeBSD 5.4-STABLE FreeBSD 5.4-STABLE #0: Sun Oct 23 16:39:41 EEST 2005     mb@efe.enderunix.org:/usr/src/sys/i386/compile/EFE i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 1075]
+04/12/05 16:27:20: Default matching algorithm: lfp
+04/12/05 16:27:20: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+04/12/05 16:27:20: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+04/12/05 16:27:20: loaded 2 module(s)
+04/12/05 16:27:20: loadnet(10.30.0.11/255.255.255.255) method: fixed 40000
+04/12/05 16:27:20: em0 has been opened in  promisc mode. (192.168.1.0/255.255.255.0)
+   
+</pre>
+</li>
+
+<li>
+<p>Start <tt class="COMMAND">tcpreplay</tt> with the test capture you just downloaded at
+step 1.</p>
+
+<pre class="SCREEN">
+[root@efe ~/calls/ok]$ /usr/local/sbin/tcpreplay -i em0 endercall2.pcap
+sending on: em0
+ 4534 packets (1344595 bytes) sent in 141.44 seconds
+ 9506.2 bytes/sec 0.07 megabits/sec 32 packets/sec
+   
+</pre>
+</li>
+
+<li>
+<p>You will see that VoIPong immediately starts monitoring your call. Following lines
+will appear in your voipong.log file:</p>
+
+<pre class="SCREEN">
+24/10/05 20:47:23: created a call recording instance!
+24/10/05 20:47:23: [68826] VoIP call has been detected.
+24/10/05 20:47:23: [68826] 10.0.0.145:49604 &#60; -- &#62; 10.0.0.200:49606
+24/10/05 20:47:23: [68826] Encoding 0-PCMU-8KHz, recording.......
+   
+</pre>
+
+<p>At the end of the call, you'll see that two .WAV files are created:</p>
+
+<pre class="SCREEN">
+24/10/05 20:52:52: [68826] maximum idle time [10 secs] has been elapsed for this call, the call might have been ended.
+24/10/05 20:52:52: [68826] .WAV file output/20051204/session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav has been created successfully
+24/10/05 20:52:52: [68826] .WAV file output/20051204/session-enc0-PCMU-8KHz-10.0.0.200,49606-10.0.0.145,49604.wav has been created successfully
+   
+</pre>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">ls /var/log/output/20051024/</kbd>
+session-enc0-PCMU-8KHz-10.0.0.200,49606-10.0.0.145,49604.wav        session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav
+   
+</pre>
+</li>
+
+<li>
+<p>You can play output files with several utilities including <tt class="COMMAND">play,
+xmms</tt> etc.:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">play /var/log/voipoutput/20051025/session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav</kbd>
+   
+</pre>
+</li>
+</ul>
+</div>
+
+<div class="SECT1">
+<hr />
+<h2 class="SECT1"><a id="EXAMPLES-MSNETMEETING" name="EXAMPLES-MSNETMEETING">7.2.
+Capturing a <span class="TRADEMARK">Microsoft</span>&#8482; Netmeeting call</a></h2>
+
+<p>Not written yet.</p>
+</div>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="FAQ" name="FAQ"></a>Chapter 8. Frequently Asked Questions</h1>
+
+<p>This is a a non-complete list of questions frequently asked at voipong mailing list.
+You can have a more recent and updated one within the <a
+href="http://www.enderunix.org/voipong/index.php?sect=faq" target="_top">FAQ</a> at
+VoIPong <a href="http://www.enderunix.org/voipong/" target="_top">web site</a>.</p>
+</div>
+
+<div class="CHAPTER">
+<hr />
+<h1><a id="THANKS" name="THANKS"></a>Chapter 9. Thanks</h1>
+
+<p>Please find a list of people and organizations who contributed or gave support to
+VoIPong <a href="http://www.enderunix.org/voipong/voipong-devel/THANKS"
+target="_top">here</a> .</p>
+</div>
+</div>
+
+<hr />
+</body>
+</html>
+

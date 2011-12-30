@@ -1,0 +1,73 @@
+<chapter id="features">
+  <title>Features</title>
+
+   <itemizedlist>
+	<listitem>
+	<para>
+	Simple, optimized, extendable, fast code
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Easy debugging
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Easy installation and administration
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Powerful management console (voipctl) for run-time server administration
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Detailed logging
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	CSV style CDR (Call Detail Record) logs
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Dynamic framework for multiple call-catching algorithms to co-exist together
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Dynamic Shared Object Modules <emphasis>(DSOM)</emphasis> for loading of third party voice codec modules
+	at runtime.
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Users can choose the best algorithm to suit their networks.
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Produces audible output (.wav) for G711 (u-law) and G711 (a-law) codecs.
+	</para>
+	</listitem>
+
+	<listitem>
+	<para>
+	Output can be merged into one single file <emphasis>via soxmix</emphasis>.
+	</para>
+	</listitem>
+   </itemizedlist>
+
+</chapter>

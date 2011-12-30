@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Compilation &#38; Installation</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="UP" title="Installation" href="installation.html" />
+<link rel="PREVIOUS" title="Installation" href="installation.html" />
+<link rel="NEXT" title="Installation via BSD ports system" href="installports.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="SECT1" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="installation.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom">Chapter 3. Installation</td>
+<td width="10%" align="right" valign="bottom"><a href="installports.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="SECT1">
+<h1 class="SECT1"><a id="COMPILATION" name="COMPILATION">3.2. Compilation &#38;
+Installation</a></h1>
+
+<p>Download the latest VoIPong tarball from <a
+href="http://www.enderunix.org/voipong/index.php?sect=download"
+target="_top">EnderUNIX</a> and uncompress it:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">tar zxvf <tt
+class="FILENAME">voipong-<var class="REPLACEABLE">version</var>.tar.gz</tt></kbd>
+   
+</pre>
+
+There are several pre-written <tt class="FILENAME">Makefile</tt> files in the source
+directory. Examine each of them and choose the one which most suits your system. If
+you're running of the the BSD type Operating Systems (i.e. FreeBSD, OpenBSD, NetBSD, Mac
+OSX) copy <tt class="FILENAME">Makefile.bsd</tt> as <tt class="FILENAME">Makefile</tt>;
+if you're using a Linux distribution then, copy <tt class="FILENAME">Makefile.linux</tt>
+as <tt class="FILENAME">Makefile</tt>. You might need to change <var
+class="LITERAL">CFLAGS</var> and <var class="LITERAL">LDFLAGS</var> variables
+accordingly: 
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">cp Makefile.bsd Makefile</kbd>
+   
+</pre>
+
+Type <tt class="COMMAND">make</tt> to compile <tt class="FILENAME">voipong</tt>, <tt
+class="FILENAME">voipctl</tt> and voice decoder modules: 
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">make</kbd>
+   
+</pre>
+
+Type <tt class="COMMAND">make install</tt> to copy compiled binaries, shared modules,
+configuration files, manual pages and related documentation into the proper locations: 
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">make install</kbd> 
+   
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="installation.html"
+accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="installports.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">Installation</td>
+<td width="34%" align="center" valign="top"><a href="installation.html"
+accesskey="U">Up</a></td>
+<td width="33%" align="right" valign="top">Installation via BSD ports system</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+

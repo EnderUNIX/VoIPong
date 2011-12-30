@@ -1,0 +1,19 @@
+
+<!ENTITY chap.intro		SYSTEM "intro.sgml">
+
+<!ENTITY chap.features		SYSTEM "features.sgml">
+
+<!ENTITY chap.install		SYSTEM "installation.sgml">
+
+<!ENTITY chap.dsom		SYSTEM "dsom.sgml">
+
+<!ENTITY chap.config		SYSTEM "config.sgml">
+
+<!ENTITY chap.usage		SYSTEM "usage.sgml">
+
+<!ENTITY chap.examples		SYSTEM "examples.sgml">
+
+<!ENTITY chap.faq		SYSTEM "faq.sgml">
+
+<!ENTITY chap.thanks		SYSTEM "thanks.sgml">
+

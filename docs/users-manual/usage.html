@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Usage</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="PREVIOUS" title="Network - Algorithm mappings: voipongnets"
+href="config-netfile.html" />
+<link rel="NEXT" title="Management Console: voipctl" href="usage-voipctl.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="CHAPTER" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="config-netfile.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom"></td>
+<td width="10%" align="right" valign="bottom"><a href="usage-voipctl.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="CHAPTER">
+<h1><a id="USAGE" name="USAGE"></a>Chapter 6. Usage</h1>
+
+<div class="TOC">
+<dl>
+<dt><b>Table of Contents</b></dt>
+
+<dt>6.1. <a href="usage.html#USAGE-PARAMS">Startup Parameters</a></dt>
+
+<dt>6.2. <a href="usage-voipctl.html">Management Console: voipctl</a></dt>
+
+<dt>6.3. <a href="usage-nonpriv.html">Running VoIPong with a non-privileged user</a></dt>
+
+<dt>6.4. <a href="usage-livecd.html">VoIPong Live CD</a></dt>
+</dl>
+</div>
+
+<p>Similar to other sniffer tools at the market, VoIPong needs to get a copy of the voice
+traffic you're interested in. If you're sharing a <span class="emphasis"><i
+class="EMPHASIS">hub</i></span> with one of the endpoints of the voice conversation, you
+will not need to do anything, since hub devices inherently copy traffic to all its ports.
+If you are in a <span class="emphasis"><i class="EMPHASIS">switched</i></span>
+environment, some network administration will be needed. Most modern switch devices has a
+handy <span class="emphasis"><i class="EMPHASIS">"monitor port"</i></span> which you can
+use for copying traffic going through one or more switch ports. So you'll need to copy
+one of the endpoints' traffic to that monitor port, and connect the computer on which
+VoIPong is running. If you're running VoIPong on a <span class="emphasis"><i
+class="EMPHASIS">gateway machine</i></span>, where this machine has already access to all
+the voice traffic, you will not need to do anything.</p>
+
+<div class="SECT1">
+<h1 class="SECT1"><a id="USAGE-PARAMS" name="USAGE-PARAMS">6.1. Startup
+Parameters</a></h1>
+
+<p>You can use <tt class="COMMAND">-h</tt> switch to see available startup
+parameters:</p>
+
+<pre class="SCREEN">
+[murat@efe ~/voipong]$ ./voipong -h
+usage: voipong [options]
+options:
+-h this screen
+-v version info
+-f run in foreground (don't become a daemon)
+-d debug level. Valid levels are 0 through 4. Default: 0
+-c config file path
+   
+</pre>
+
+<tt class="COMMAND">-v</tt> switch shows VoIPong version information: 
+
+<pre class="SCREEN">
+[murat@efe ~/voipong]$ ./voipong -v
+EnderUNIX VOIPONG Voice Over IP Sniffer Release 2.0-DEVEL
+Copyright (C) 2004 Murat Balaban murat || enderunix.org
+All rights reserved.
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+For more information on licensing, please see LICENSE
+file included in the voipong source distribution.
+[murat@efe ~/voipong]$ 
+   
+</pre>
+
+You can set the debug log level by <tt class="COMMAND">-d</tt> switch. Valid levels are
+<tt class="COMMAND">0</tt> through <tt class="COMMAND">4</tt>, latter being the most
+verbose. Default configuration file is <tt
+class="FILENAME">/usr/local/etc/voipong/voipong.conf</tt>. You can use alternate
+configuration file by issuing <tt class="COMMAND">-c</tt> switch and providing full path
+to the alternate configuration file. If you don't want VoIPong to daemonize, but instead
+you want it to stay at your terminal and dump log messages to the terminal, you will need
+to issue <tt class="COMMAND">-f</tt> switch. <br />
+<br />
+<p>So, If you want VoIPong to stay at the terminal, and you want to see as many log
+messages as possible, you should fire VoIPong as such:</p>
+
+<pre class="SCREEN">
+[root@devel ~]$ voipong -d4 -f
+EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+Release 2.0-DEVEL, running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+(c) Murat Balaban http://www.enderunix.org/
+20/11/05 19:33:33: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+20/11/05 19:33:33: Release 2.0-DEVEL running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 23627]
+20/11/05 19:33:33: Default matching algorithm: lfp
+20/11/05 19:33:33: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+20/11/05 19:33:33: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+20/11/05 19:33:33: loaded 2 module(s)
+20/11/05 19:33:33: loadnet(10.0.0.145/255.255.255.255) method: fixed 49604
+20/11/05 19:33:33: loadnet(172.16.0.10/255.255.0.0) method: lfp 
+20/11/05 19:33:33: fxp0 has been opened in  promisc mode. (43.43.43.0/255.255.255.192)
+   
+</pre>
+
+<br />
+<br />
+</div>
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="config-netfile.html"
+accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="usage-voipctl.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">Network - Algorithm mappings: voipongnets</td>
+<td width="34%" align="center" valign="top">&nbsp;</td>
+<td width="33%" align="right" valign="top">Management Console: voipctl</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+

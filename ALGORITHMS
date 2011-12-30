@@ -1,0 +1,48 @@
+
+		VOIPONG ALGORITHMS
+
+
+ Following release 2.0, voipong has started to provide a framework where the
+user will be able to select the algorithm that will be used for a network.
+This will hopefully enable the user to select the best algorithm to suit his
+VoIP infrastructure, so that many more calls can be detected.
+
+There are two currently active algorithms:
+
+1. LFP (Least False Positive) Algorithm:
+----------------------------------------
+
+This algorithm tries to detect calls generated via VoIP devices conforming to
+RTP and RTCP RFCs. This algorithm should be able to detect and record a wide
+range of calls (about 70 % - 80 %).
+
+To use this algorithm, you'll need to specify a network to use with it in your
+voipongnets configuration file. 
+
+	E.g.:
+	172.16.1.0/255.255.255.0	lfp
+
+
+2. FIXED (Fixed Port) Algorithm:
+--------------------------------
+
+Some VoIP devices (e.g. Grand Stream IP phone adapters) use a fixed port to
+send and receive RTP packets, and they do not conform to RFCs. If you have
+such a device, you'll need to specify it in your voipongnets file:
+
+	E.g.:
+	172.16.1.101/255.255.255.255	fixed	40000
+
+The number next to "fixed" keyword specifies the fixed port number the device
+uses for RTP transportation.
+
+
+3. LRA-SIP (Least Run Away - SIP) Algorithm:
+--------------------------------------------
+
+This algo will follow SIP signalling packets, and will spot the RTP/RTCP session 
+from the SDP packets.
+
+LRA-SIP is not implemented yet, however I'll be working on it for the
+next release (probably 2.1).
+

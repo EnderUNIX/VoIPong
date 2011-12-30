@@ -1,0 +1,70 @@
+<chapter id="examples">
+  <title>Example Scenarios</title>
+    <para>
+You can try VoIPong with Microsoft Netmeeting. Set up netmeeting so that it uses G711 at both ends, and make a voice call. You'll see the calls captured and wave files created after your call finishes.
+    </para>
+
+    <para>
+If you do not have a testbed, do not want so much pain to test VoIPong, you can replay a test capture file in your machine and see if it is catched. 
+    </para>
+
+  <sect1 id="examples-replay">
+    <title>Replaying a previous capture file</title>
+	<itemizedlist>
+	<listitem><para>Download <ulink url="http://www.enderunix.org/voipong/endercall2.pcap">this test call capture</ulink>, where me and Baris are talking about EnderUNIX team.</para>
+	</listitem>
+	<listitem><para>Download and install <ulink url="http://tcpreplay.sourceforge.net/"><command>tcpreplay</command></ulink> tool. Tcpreplay tool reads pcap capture files, and re-injects the packets into a live network.</para>
+	</listitem>
+	<listitem><para>Start VoIPong</para>
+	<screen>
+04/12/05 16:27:20: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+04/12/05 16:27:20: Release 2.0-DEVEL running on efe.enderunix.org [FreeBSD 5.4-STABLE FreeBSD 5.4-STABLE #0: Sun Oct 23 16:39:41 EEST 2005     mb@efe.enderunix.org:/usr/src/sys/i386/compile/EFE i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 1075]
+04/12/05 16:27:20: Default matching algorithm: lfp
+04/12/05 16:27:20: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+04/12/05 16:27:20: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+04/12/05 16:27:20: loaded 2 module(s)
+04/12/05 16:27:20: loadnet(10.30.0.11/255.255.255.255) method: fixed 40000
+04/12/05 16:27:20: em0 has been opened in  promisc mode. (192.168.1.0/255.255.255.0)
+	</screen>
+	</listitem>
+	<listitem><para>Start <command>tcpreplay</command> with the test capture you just downloaded at step 1.</para>
+	<screen>
+[root@efe ~/calls/ok]$ /usr/local/sbin/tcpreplay -i em0 endercall2.pcap
+sending on: em0
+ 4534 packets (1344595 bytes) sent in 141.44 seconds
+ 9506.2 bytes/sec 0.07 megabits/sec 32 packets/sec
+	</screen>
+	</listitem>
+	<listitem><para>You will see that VoIPong immediately starts monitoring your call. Following lines will appear in your voipong.log file:</para>
+	<screen>
+24/10/05 20:47:23: created a call recording instance!
+24/10/05 20:47:23: [68826] VoIP call has been detected.
+24/10/05 20:47:23: [68826] 10.0.0.145:49604 < -- > 10.0.0.200:49606
+24/10/05 20:47:23: [68826] Encoding 0-PCMU-8KHz, recording.......
+	</screen>
+<para>At the end of the call, you'll see that two .WAV files are created:</para>
+	<screen>
+24/10/05 20:52:52: [68826] maximum idle time [10 secs] has been elapsed for this call, the call might have been ended.
+24/10/05 20:52:52: [68826] .WAV file output/20051204/session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav has been created successfully
+24/10/05 20:52:52: [68826] .WAV file output/20051204/session-enc0-PCMU-8KHz-10.0.0.200,49606-10.0.0.145,49604.wav has been created successfully
+	</screen>
+	<screen>
+&prompt.root; <userinput>ls /var/log/output/20051024/</userinput>
+session-enc0-PCMU-8KHz-10.0.0.200,49606-10.0.0.145,49604.wav		session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav
+	</screen>
+	</listitem>
+	<listitem><para>You can play output files with several utilities including <command>play, xmms</command> etc.:</para>
+	<screen>
+&prompt.root; <userinput>play /var/log/voipoutput/20051025/session-enc0-PCMU-8KHz-10.0.0.145,49604-10.0.0.200,49606.wav</userinput>
+	</screen>
+	</itemizedlist>
+  </sect1>
+
+  <sect1 id="examples-msnetmeeting">
+    <title>Capturing a <trademark>Microsoft</trademark> Netmeeting call</title>
+	<para>
+	Not written yet.
+	</para>
+  </sect1>
+
+</chapter>

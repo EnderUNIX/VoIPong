@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Running VoIPong with a non-privileged user</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="UP" title="Usage" href="usage.html" />
+<link rel="PREVIOUS" title="Management Console: voipctl" href="usage-voipctl.html" />
+<link rel="NEXT" title="VoIPong Live CD" href="usage-livecd.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="SECT1" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="usage-voipctl.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom">Chapter 6. Usage</td>
+<td width="10%" align="right" valign="bottom"><a href="usage-livecd.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="SECT1">
+<h1 class="SECT1"><a id="USAGE-NONPRIV" name="USAGE-NONPRIV">6.3. Running VoIPong with a
+non-privileged user</a></h1>
+
+<p>It is strongly advised that you avoid running VoIPong with super-user, but use a
+non-privileged special user created only for it. This section describes the steps you
+should take to accomplish this. Note that these steps should be done after you compiled
+and installed VoIPong successfully.</p>
+
+<ul>
+<li>
+<p>Create voipong user and group</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">pw group add voipong</kbd>
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">pw user add voipong -g voipong -m -s /usr/local/bin/bash</kbd>
+   
+</pre>
+</li>
+
+<li>
+<p>Change ownership of <tt class="COMMAND">voipong</tt>, <tt class="COMMAND">voipctl</tt>
+and <tt class="FILENAME">/usr/local/etc/voipong</tt> directory to voipong user:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">chown voipong /usr/local/bin/voipong</kbd>
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">chown voipong /usr/local/bin/voipctl</kbd>
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">chown -R voipong /usr/local/etc/voipong</kbd>
+<samp class="PROMPT">#</samp> <kbd
+class="USERINPUT">chgrp -R voipong /usr/local/etc/voipong</kbd>
+   
+</pre>
+</li>
+
+<li>
+<p>Change ownership of BPF device files (<tt class="FILENAME">/dev/bpf*</tt>) to voipong
+user:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">chown voipong /dev/bpf*</kbd>
+   
+</pre>
+</li>
+
+<li>
+<p>Switch user to voipong:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">#</samp> <kbd class="USERINPUT">su - voipong</kbd>
+To see all of the directories on your FreeBSD system, type
+
+        ls -R / | more
+                -- Dru genesis@istar.ca
+<samp class="PROMPT">%</samp>
+   
+</pre>
+</li>
+
+<li>
+<p>Create runtime directories:</p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">mkdir logs</kbd>
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">mkdir output</kbd>
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">mkdir run</kbd>
+   
+</pre>
+</li>
+
+<li>
+<p>Change log, pid and output directory paths to the new directories in <tt
+class="FILENAME">voipong.conf</tt></p>
+
+<pre class="PROGRAMLISTING">
+logdir = <var class="REPLACEABLE">/home/voipong/logs/</var>
+logfile = <var class="REPLACEABLE">voipong.log</var>
+outdir = <var class="REPLACEABLE">/home/voipong/output/</var>
+cdrfile = <var class="REPLACEABLE">/home/voipong/output/voipcdr.log</var>
+pidfile = <var class="REPLACEABLE">/home/voipong/run/voipong.pid</var>
+mgmt_ipcpath = <var class="REPLACEABLE">/home/voipong/run/voipongmgmt.sock</var>
+   
+</pre>
+</li>
+
+<li>
+<p>You can now run <tt class="COMMAND">voipong</tt></p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">id</kbd>
+uid=1042(voipong) gid=1042(voipong) groups=1042(voipong)
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">voipong -d4 -f</kbd>
+EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+Release 2.0-DEVEL, running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+(c) Murat Balaban http://www.enderunix.org/
+20/11/05 22:34:03: EnderUNIX VOIPONG Voice Over IP Sniffer starting...
+20/11/05 22:34:03: Release 2.0-DEVEL running on devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]. (c) Murat Balaban http://www.enderunix.org/ [pid: 41334]
+20/11/05 22:34:03: Default matching algorithm: lfp
+20/11/05 22:34:03: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2817f3bc)
+20/11/05 22:34:03: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x281813e0)
+20/11/05 22:34:03: loaded 2 module(s)
+20/11/05 22:34:03: loadnet(10.0.0.145/255.255.255.255) method: fixed 49604
+20/11/05 22:34:03: loadnet(172.16.0.10/255.255.0.0) method: lfp 
+20/11/05 22:34:03: fxp0 has been opened in  promisc mode. (43.43.43.0/255.255.255.128)
+   
+</pre>
+</li>
+
+<li>
+<p>You can check whether the daemon is running with the correct user with <tt
+class="COMMAND">voipctl</tt></p>
+
+<pre class="SCREEN">
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">id</kbd>
+uid=1042(voipong) gid=1042(voipong) groups=1042(voipong)
+<samp class="PROMPT">%</samp> <kbd class="USERINPUT">voipctl</kbd>
+
+
+
+Connected to VoIPong Management Console
+
+System:
+devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+
+voipong&#62; info
+
+General Server Info:
+--------------------------:
+Server version            : Release 2.0-DEVEL
+System                    : devel.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+Current work. direct.     : /usr/home/voipong
+Log level                 : 4
+Mix Voice Flag            : true
+Process ID (PID)          : 41334
+User                      : voipong [VoIPong Kullanicisi]
+Group                     : 1042
+voipong&#62; 
+   
+</pre>
+</li>
+</ul>
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="usage-voipctl.html"
+accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="usage-livecd.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">Management Console: voipctl</td>
+<td width="34%" align="center" valign="top"><a href="usage.html"
+accesskey="U">Up</a></td>
+<td width="33%" align="right" valign="top">VoIPong Live CD</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+

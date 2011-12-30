@@ -1,0 +1,47 @@
+<!DOCTYPE book PUBLIC "-//FreeBSD//DTD DocBook V4.1-Based Extension//EN" [
+<!ENTITY % man PUBLIC "-//FreeBSD//ENTITIES DocBook Manual Page Entities//EN"> %man;
+<!ENTITY % date "$Id: book.sgml,v 1.6 2005/12/07 11:15:44 murat Exp $">
+<!ENTITY % chapters SYSTEM "chapters.ent"> %chapters;
+]>
+
+<book lang="en">
+  <bookinfo>
+    <title>VoIPong User's Manual</title>
+
+    <author>
+      <firstname>Murat</firstname>
+      <surname>Balaban</surname>
+      <affiliation>
+        <address>
+	<email>murat ~ enderunix.org</email>
+	</address>
+      </affiliation>
+    </author>
+
+    <pubdate>$Id: book.sgml,v 1.6 2005/12/07 11:15:44 murat Exp $</pubdate>
+
+    <copyright>
+      <year> 2004 </year>
+      <year> 2005 </year>
+      <holder>
+	 Murat Balaban.
+	 Permission is granted to copy, distribute and/or modify this document
+	 under the terms of the GNU Free Documentation License,
+	 Version 1.2 or any later version published by 
+	 the Free Software Foundation; with no Invariant Sections,
+	 no Front-Cover Texts, and no Back-Cover Texts.
+      </holder>
+    </copyright>
+  </bookinfo> 
+
+  &chap.intro;
+  &chap.features;
+  &chap.install;
+  &chap.dsom;
+  &chap.config;
+  &chap.usage;
+  &chap.examples;
+  &chap.faq;
+  &chap.thanks;
+  
+</book>

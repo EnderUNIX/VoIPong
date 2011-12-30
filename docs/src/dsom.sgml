@@ -1,0 +1,29 @@
+<chapter id="dsom">
+   <title>Dynamic Shared Object Modules (DSOM)</title>
+
+	<para>
+	Since release 2.0 upwards, VoIPong provides a powerful dynamic framework for loading of 3rd party voice decoders into the running voipong executable at runtime. This is called Dynamic Shared Object Modules (DSOM) Framework. Simply put, DSOM vocoder modules are shared libraries with the <filename>.so</filename> extension. VoIPong looks for those shared libraries in the preconfigured <literal>modpath</literal> directory, loads them one by one. DSOM engine resident at VoIPong core, spots the initialization method in the shared module and invokes it allowing the module to register itself inside VoIPong runtime environment:
+	<screen>
+07/12/05 13:29:25: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcmu.so (@0x2813e370)
+07/12/05 13:29:25: loadmodule: /usr/local/etc/voipong/modules/modvocoder_pcma.so (@0x28140390)
+07/12/05 13:29:25: loaded 2 module(s)
+	</screen>
+	</para>
+	<para>
+	For security reasons, the DSOMs are expected to be owned by the same user and group who is running the core VoIPong executable. For instance, if the user running the program has uid 1000 and gid 10; the modules should also be owned by uid 1000 and gid 10. 
+	</para>
+	<para>
+	The naming convention is that the modules should start with the <literal>modvocoder_</literal> keyword, and should include the name of the decoder in the module, followed by the <literal>.so</literal> extension. For example, the correct name for the g711 (u-law) module can be <filename>modvocoder_pcmu.so</filename>.
+	</para>
+
+	<para>
+	There are two pre-written voice decoder modules with VoIPong release 2.0:
+		<itemizedlist>
+			<listitem><para><filename>modvocoder_pcmu.so</filename>: g711 (u-law) decoder (payload type 0)</para></listitem>
+			<listitem><para><filename>modvocoder_pcma.so</filename>: g711 (a-law) decoder (payload type 8)</para></listitem>
+		</itemizedlist>
+	</para>
+	<para>
+	To code and install your own vocoder module (i.e. for g726), VoIPong DSOM Decoder Writer's Guide will be available soon.
+	</para>
+</chapter>

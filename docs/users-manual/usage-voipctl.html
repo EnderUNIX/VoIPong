@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Management Console: voipctl</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="UP" title="Usage" href="usage.html" />
+<link rel="PREVIOUS" title="Usage" href="usage.html" />
+<link rel="NEXT" title="Running VoIPong with a non-privileged user"
+href="usage-nonpriv.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="SECT1" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="usage.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom">Chapter 6. Usage</td>
+<td width="10%" align="right" valign="bottom"><a href="usage-nonpriv.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="SECT1">
+<h1 class="SECT1"><a id="USAGE-VOIPCTL" name="USAGE-VOIPCTL">6.2. Management Console:
+voipctl</a></h1>
+
+<p>VoIPong provides the user with the ability to administer the server at runtime. You
+can use <tt class="COMMAND">voipctl</tt> command for this purpose. When fired, <tt
+class="COMMAND">voipctl</tt> will connect VoIPong and will wait for user's commands:</p>
+
+<p></p>
+
+<pre class="SCREEN">
+[root@efe ~/voipong]$ voipctl 
+
+Connected to VoIPong Management Console
+
+System:
+efe.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+
+
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">help</tt> is the same old "help": 
+
+<pre class="SCREEN">
+voipong&#62; help
+Commands:
+help : this one
+quit : quit management console
+uptime : Server uptime
+setdebug [level] : set debug level to [level]
+logrotate : rotate server's logs
+shutdown : shutdown server
+rusage : CPU usage statistics for the server
+loadnets : Reload voipongnets file
+info : General server information
+shcall : Show currently monitored calls
+shrtcp : Show currently RTCP cache
+killcall [id] : end monitoring session with [id]
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">uptime</tt> shows how long the server has been running: 
+
+<pre class="SCREEN">
+voipong&#62; uptime
+Server uptime: 5 minutes 57 seconds
+
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">!!</tt>: You can use !! command to issue the last command you typed.
+(same as in sh): 
+
+<pre class="SCREEN">
+voipong&#62; !!
+Server uptime: 6 minutes 13 seconds
+
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">logrotate</tt> command rotates server logs: 
+
+<pre class="SCREEN">
+voipong&#62; logrotate
+Logrotate successfull
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">shutdown</tt> command will shutdown the server and close management
+console connection 
+
+<pre class="SCREEN">
+voipong&#62; shutdown
+   
+</pre>
+
+<tt class="COMMAND">rusage</tt> command will give information related to server's CPU
+utilization 
+
+<pre class="SCREEN">
+voipong&#62; rusage
+
+Current CPU usage stats:
+----------------------------------------
+Total "user" time : 0 seconds
+Total used "system" time : 0 seconds
+Shared Memory Size : 384 KB
+Integral Memory Size : 1512 KB
+Integral stack Size : 1024 KB
+Page requests : 70
+Page errors : 0
+Block input operations : 0
+Block output operations : 2
+Messages sent : 1
+Messages received : 1
+Signals : 0
+Voluntary "context switch"s : 78
+Involuntary "context switch"s : 1
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">loadnets</tt> command will re-read voipongnets and re-load
+network/algorithms mapping table 
+
+<pre class="SCREEN">
+voipong&#62; loadnets
+Networks file has been reloaded successfuly
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">info</tt> command will give general server information 
+
+<pre class="SCREEN">
+voipong&#62; info
+
+General Server Info:
+--------------------------:
+Server version : Release 2.0-DEVEL
+System : efe.enderunix.org [FreeBSD 4.11-STABLE FreeBSD 4.11-STABLE #0: Tue Sep i386]
+Current work. direct. : /usr/home/murat/voipong
+Log level : 4
+Process ID (PID) : 16240
+User : root [Charlie &#38;]
+Group : 0
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">setdebug</tt> command will change runtime log verbosity 
+
+<pre class="SCREEN">
+voipong&#62; setdebug 4
+# set new debug level to 4
+
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">shcall</tt> command will list calls currently monitored 
+
+<pre class="SCREEN">
+voipong&#62; shcall
+
+
+
+ID    NODE1            PORT1 NODE2            PORT2 STIME             DURATION 
+----- ---------------- ----- ---------------- ----- ----------------- ------------
+
+01123 41.27.13.1       12000 31.12.11.8       24000 24/10/05 11:11:23 33 seconds
+
+Total listed: 1
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">shrtcp</tt> command will show current RTCP cache 
+
+<pre class="SCREEN">
+voipong&#62; shrtcp
+
+
+
+ID    NODE1            PORT1 NODE2            PORT2 STIME            
+----- ---------------- ----- ---------------- ----- -----------------
+
+01123 41.27.13.1       12001 31.12.11.8       24001 24/10/05 11:11:23
+
+Total listed: 1
+voipong&#62;
+   
+</pre>
+
+<tt class="COMMAND">killcall</tt> will end monitoring the call by id 
+
+<pre class="SCREEN">
+voipong&#62; killcall 2
+transport_simplecmd: server returned error: No such session by ID: 2
+
+cannot process killcall command
+voipong&#62; 
+   
+</pre>
+
+<tt class="COMMAND">q, quit, exit</tt> commands will end management session 
+
+<pre class="SCREEN">
+voipong&#62; q
+Bye!
+[root@efe /home/murat/voipong]$ 
+   
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="usage.html"
+accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="usage-nonpriv.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">Usage</td>
+<td width="34%" align="center" valign="top"><a href="usage.html"
+accesskey="U">Up</a></td>
+<td width="33%" align="right" valign="top">Running VoIPong with a non-privileged
+user</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+

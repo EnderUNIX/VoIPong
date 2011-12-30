@@ -1,0 +1,68 @@
+<chapter id="installation">
+  <title>Installation</title>
+
+  <sect1 id="Prerequisites">
+    <title>Before you proceed: Prerequisites</title>
+    <para>
+    You should have <command>pcap</command> library installed beforehand. Please download <command>libpcap</command> from <ulink url="http://www.tcpdump.org">tcpdump.org</ulink> and install it if you don't have it in your system. Please note that most Operating Systems and Linux distributions provide this library in their default installations.
+    </para>
+    <para>
+    Also, for .WAV file creation, you should have <command>sox</command> and <command>soxmix</command> tools installed. If you don't have those, please download them from <ulink url="http://sox.sourceforge.net">sox.sourceforge.net</ulink> and install it in your system.
+    </para>
+  </sect1>
+
+
+  <sect1 id="Compilation">
+    <title>Compilation & Installation</title>
+    <para>
+	Download the latest VoIPong tarball from <ulink url="http://www.enderunix.org/voipong/index.php?sect=download">EnderUNIX</ulink> and uncompress it:
+	<screen>
+&prompt.root; <userinput>tar zxvf <filename>voipong-<replaceable>version</replaceable>.tar.gz</filename></userinput>
+	</screen>
+There are several pre-written <filename>Makefile</filename> files in the source directory. Examine each of 
+them and choose the one which most suits your system. If you're running of the
+the BSD type Operating Systems (i.e. FreeBSD, OpenBSD, NetBSD, Mac OSX) copy
+<filename>Makefile.bsd</filename> as <filename>Makefile</filename>; if you're using a Linux distribution then, copy
+<filename>Makefile.linux</filename> as <filename>Makefile</filename>. You might need to change <literal>CFLAGS</literal> and <literal>LDFLAGS</literal> variables accordingly:
+	<screen>
+&prompt.root; <userinput>cp Makefile.bsd Makefile</userinput>
+	</screen>
+
+	Type <command>make</command> to compile <filename>voipong</filename>, <filename>voipctl</filename> and voice decoder modules:
+	<screen>
+&prompt.root; <userinput>make</userinput>
+	</screen>
+
+	Type <command>make install</command> to copy compiled binaries, shared modules, configuration files, manual pages and related documentation into the proper locations:
+	<screen>
+&prompt.root; <userinput>make install </userinput>
+	</screen>
+    </para>
+  </sect1>
+
+
+  <sect1 id="installports">
+    <title>Installation via BSD ports system</title>
+    <para>
+	BSD Operating Systems (FreeBSD, NetBSD, OpenBSD, Darwin etc.) has a ports system for easy package administration. VoIPong is a FreeBSD port, so you can install it from FreeBSD ports tree. VoIPong is located in  <filename>/usr/ports/audio/voipong</filename> directory:
+    </para>
+
+    <para>
+	Change your current working directory to <filename>/usr/ports/audio/voipong</filename> and type:
+	<screen>
+&prompt.root; <userinput>cd <filename>/usr/ports/audio/voipong</filename></userinput>
+&prompt.root; <userinput>make install clean</userinput>
+	</screen>
+	FreeBSD will fetch the tarball, uncompress it, compile the sources and install VoIPong for you.
+    </para>
+
+    <para>Alternatively, you can install VoIPong .tbz package with <command>pkg_add</command> (1) command:
+	<screen>
+&prompt.root; <userinput>fetch \ 
+		<filename>ftp://ftp.freebsd.org/pub/FreeBSD/releases/i386/5.4-RELEASE/packages/audio/voipong-2.0.tbz</filename></userinput>
+&prompt.root; <userinput>pkg_add <filename>voipong-2.0.tbz</filename></userinput>
+	</screen>
+    </para>
+  </sect1>
+
+</chapter>

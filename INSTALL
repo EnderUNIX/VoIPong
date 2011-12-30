@@ -1,0 +1,68 @@
+
+			EnderUNIX VoIPong 2.0 INSTALL
+
+The program is tested on 
+	- FreeBSD 5.4
+	- Solaris 8
+	- istanbulX GNU/Linux
+
+
+[1] Prerequisites
+	a) You should have libpcap packet capturing library installed
+	b) For .WAV file creation, you should install sox program
+	   and supply sox and soxmix path in voipong.conf configuration file.
+
+To compile VoIPong:
+
+There are several pre-written Makefiles in the source directory. Examine each of 
+them and choose the one which most suits your system. If you're running of the
+the BSD type Operating Systems (i.e. FreeBSD, OpenBSD, NetBSD, Mac OSX) copy
+Makefile.bsd as Makefile; if you're using a Linux distribution then, copy
+Makefile.linux as Makefile. You might need to change CFLAGS and LDFLAGS variables
+accordingly.
+
+After you've chosen the Makefile and copied it, type make to compile VoIPong:
+
+# make
+
+To install the compiled binaries, type:
+
+# make install 
+
+and binaries will be installed at /usr/local/bin/, the configuration 
+file will be installed as /usr/local/etc/voipong.conf, and the algorithm 
+specification file as /usr/local/etc/voipongnets.
+
+You're done. All you need to edit the configuration file, change
+soxpath and device parameters to suit your system and fire voipong
+
+$ voipong
+
+You can connect to mgmt interface and control your server from the
+interface. Use voipctl command for this purpose:
+
+mb@efe ~$ voipctl
+Connected to /var/run/voipongmgmt.sock.
+Escape character is '^]'.
+EnderUNIX VOIPONG Voice Over IP Sniffer Welcome to management console
+System:  efe.enderunix.org [FreeBSD 5.4-RELEASE FreeBSD 5.4-RELEASE #0: Sun May  8 10:21:06 UTC 2005     root@harlow.cse.buffalo.edu:/usr/obj/usr/src/sys/GENERIC i386]
+
+voipong>
+voipong> help
+Commands:
+help                  : this one
+quit                  : quit management console
+logrotate             : rotate server's logs
+shutdown              : shutdown server
+rusage                : CPU usage statistics for the server
+info                  : General server information
+uptime                : Server uptime
+shcall                : Show currently monitored calls
+shrtcp                : Show current RTCP cache
+killcall [id]         : end monitoring session with [id]
+voipong> 
+
+Please see ALGORITHMS file for a quick primer on using VoIPong's call catching algorithms.
+
+Wed Sep 28 16:42:02 EEST 2005
+http://www.enderunix.org

@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Network - Algorithm mappings: voipongnets</title>
+<meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.7" />
+<link rel="HOME" title="VoIPong User's Manual" href="index.html" />
+<link rel="UP" title="Configuration" href="config.html" />
+<link rel="PREVIOUS" title="Configuration" href="config.html" />
+<link rel="NEXT" title="Usage" href="usage.html" />
+<link rel="STYLESHEET" type="text/css" href="docbook.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body class="SECT1" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#840084"
+alink="#0000FF">
+<div class="NAVHEADER">
+<table summary="Header navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<th colspan="3" align="center">VoIPong User's Manual</th>
+</tr>
+
+<tr>
+<td width="10%" align="left" valign="bottom"><a href="config.html"
+accesskey="P">Prev</a></td>
+<td width="80%" align="center" valign="bottom">Chapter 5. Configuration</td>
+<td width="10%" align="right" valign="bottom"><a href="usage.html"
+accesskey="N">Next</a></td>
+</tr>
+</table>
+
+<hr align="LEFT" width="100%" />
+</div>
+
+<div class="SECT1">
+<h1 class="SECT1"><a id="CONFIG-NETFILE" name="CONFIG-NETFILE">5.2. Network - Algorithm
+mappings: voipongnets</a></h1>
+
+<p>Sniffing out voice is a tough task. You cannot design an algorithm and expect to catch
+all the VoIP calls. VoIP is relatively new and it is not a highly standardized
+technology. So there have to be several call catching algorithms for various setups.
+VoIPong provides a framework where you can set the call catching algorithm which you
+think will best suit your VoIP infrastructure. This results in a much more specialized
+and successful call sniffing.</p>
+
+<div class="SECT2">
+<h2 class="SECT2"><a id="CONFIG-NETFILE-LFP" name="CONFIG-NETFILE-LFP">5.2.1. Least False
+Positive (LFP) algorithm</a></h2>
+
+<p>This algorithm tries to detect calls generated via VoIP devices conforming to <span
+class="emphasis"><i class="EMPHASIS">RTP</i></span> and <span class="emphasis"><i
+class="EMPHASIS">RTCP</i></span> RFCs. This algorithm should detect and record a broad
+range of calls. The most obvious advantage of this algorithm is that you'll have barely
+no false positives. This is why this method is named as LFP. The #1 disadvantage will be
+that this will not be able to catch calls if there are no <span class="emphasis"><i
+class="EMPHASIS">RTCP</i></span> packets or the devices do not conform to RFCs. To use
+this algorithm, you will need to specify a network to use with it in your voipongnets
+file.</p>
+
+<pre class="SCREEN">
+<kbd class="USERINPUT">172.16.1.0/255.255.255.0   lfp</kbd>
+<kbd class="USERINPUT">10.30.0.0/255.255.252.0    lfp</kbd>
+       
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="SECT2">
+<h2 class="SECT2"><a id="CONFIG-NETFILE-FIXED" name="CONFIG-NETFILE-FIXED">5.2.2. Fixed
+(Fixed Port) algorithm</a></h2>
+
+<p>Some VoIP devices (e.g. <span class="emphasis"><i
+class="EMPHASIS">Grandstream(TM)</i></span> IP adapters) use a fixed port to send and
+receive RTP datagrams, and they do not conform to RFCs, and do not send any link control
+information (RTCP packets). If you have such devices in your network, you can specify
+their algorithm as fixed in the <tt class="FILENAME">voipongnets</tt> file. This
+algorithm cannot be used with networks, it can only be used with hosts, so netmask
+address should always be <tt class="HOSTID">255.255.255.255</tt>. Please note that, after
+the fixed keyword, you are expected to set the fixed port number the device is using. For
+example, suppose that you have a device which uses port <tt class="HOSTID">40000</tt> to
+send <span class="emphasis"><i class="EMPHASIS">RTP</i></span> packets, you should add
+this line to your <tt class="FILENAME">voipongnets</tt> file:</p>
+
+<pre class="SCREEN">
+<kbd class="USERINPUT">172.16.1.101/255.255.255.255   fixed   40000</kbd>
+       
+</pre>
+
+<br />
+<br />
+</div>
+
+<div class="SECT2">
+<h2 class="SECT2"><a id="CONFIG-NETFILE-LRA" name="CONFIG-NETFILE-LRA">5.2.3. LRA-SIP
+Algorithm</a></h2>
+
+<p>LRA-SIP will follow <span class="emphasis"><i class="EMPHASIS">SIP</i></span>
+signalling packets, and will spot the RTP/RTCP session from the <span class="emphasis"><i
+class="EMPHASIS">SDP</i></span> packets. This algorithm is not implemented yet, however I
+will be working on it for the next release (probably <var
+class="REPLACEABLE">2.1.?</var>)</p>
+</div>
+</div>
+
+<div class="NAVFOOTER">
+<hr align="LEFT" width="100%" />
+<table summary="Footer navigation table" width="100%" border="0" cellpadding="0"
+cellspacing="0">
+<tr>
+<td width="33%" align="left" valign="top"><a href="config.html"
+accesskey="P">Prev</a></td>
+<td width="34%" align="center" valign="top"><a href="index.html"
+accesskey="H">Home</a></td>
+<td width="33%" align="right" valign="top"><a href="usage.html"
+accesskey="N">Next</a></td>
+</tr>
+
+<tr>
+<td width="33%" align="left" valign="top">Configuration</td>
+<td width="34%" align="center" valign="top"><a href="config.html"
+accesskey="U">Up</a></td>
+<td width="33%" align="right" valign="top">Usage</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
+
